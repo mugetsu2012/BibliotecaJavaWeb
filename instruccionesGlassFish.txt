@@ -1,0 +1,19 @@
+Instrucciones generales Proyecto WEB
+
+-Ir a la direccion http://download.oracle.com/glassfish/4.1.1/release/index.html y descargar el archivo
+glassfish-4.1.1-web.zip
+
+-Extraer la carperta "glassfish4" y copiarla en el disco principal "C", para que quede la ruta de la 
+forma "C:\glassfish4"
+
+-En NETBEANS en la pestaña "Servicios/Services" ir a la opción Servers o Servidores y agregar un servidor
+GlassFish con la ruta previamente creada
+
+-Correr el proyecto y comprobar que funcione
+
+
+
+***********Notas*****************
+-Se debe tener a java como variable de entorno, la ruta a la variable deberia ser mas o menos 
+asi "C:\Program Files\Java\jdk1.8.0_112\bin" 
+-Se debe otorgar permisos a glassfish cuando sean pedidos por parte del firewall
