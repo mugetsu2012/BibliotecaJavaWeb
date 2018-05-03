@@ -1,0 +1,288 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:composition template="/WEB-INF/facelets/templates/layout.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Libros" />
+        </ui:define>
+        <ui:define name="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card ">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">search</i>
+                                </div>
+                                <h4 class="card-title">Filtros</h4>
+                            </div>
+                            <h:form>
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="bsqNombreLibro" class="bmd-label-floating">Nombre</label>                                                
+                                                <h:inputText id="bsqNombreLibro" value="#{crudLibrosBean.nombreBuscar}" styleClass="form-control"></h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="bsqAutorLibro" class="bmd-label-floating">Autor</label>                                                
+                                                <h:inputText id="bsqAutorLibro" value="#{crudLibrosBean.autoresBuscar}" styleClass="form-control"></h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">                                            
+                                            <h:selectOneMenu id="bsqCategoria" styleClass="selectpicker" title="Categoria" value="#{crudLibrosBean.idCategoria}">
+                                                <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                                                <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>
+                                                <f:selectItem itemValue="0" itemLabel="Todas las categorias" >                                                    
+                                                    <f:passThroughAttribute name="selected" value="selected"></f:passThroughAttribute>
+                                                </f:selectItem>
+                                                <f:selectItems value="#{crudLibrosBean.opcionesCategoria}" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>                   
+                            </div>
+                            <div class="card-footer ">                                
+
+                                <h:commandButton styleClass="btn btn-fill btn-rose" value="Buscar" id="btnBuscar"
+                                                 action="#{crudLibrosBean.buscarLibros(crudLibrosBean.nombreBuscar, crudLibrosBean.autoresBuscar, crudLibrosBean.idCategoria)}">
+                                    <f:ajax execute="bsqNombreLibro bsqAutorLibro bsqCategoria" render="tablaDatos" onevent="onEventFunction"></f:ajax>
+                                </h:commandButton>
+                            </div>
+                            </h:form>
+                            
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">assignment</i>
+                                </div>
+                                <h4 class="card-title">Libros</h4>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="text-left">
+                                    <button type="button" id="btnNuevoLibro" class="btn btn-success btn-fill btn-wd">
+                                        Nuevo<div class="ripple-container"></div>
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <h:panelGroup id="tablaDatos">
+                                                <table class="table">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Codigo</th>
+                                                <th>Nombre</th>
+                                                <th>Descripcion</th>
+                                                <th>Autores</th>  
+                                                <th>Edicion</th>
+                                                <th>Categoria</th>
+                                                <th class="text-right">Editar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ui:repeat value="#{crudLibrosBean.libros}" var="libro">
+                                                <tr>
+                                                
+                                                    <td>#{libro.id_item}</td>
+                                                    <td>#{libro.nombre}</td>
+                                                    <td>#{libro.descripcion}</td>
+                                                    <td>#{libro.nombreAutor}</td>
+                                                    <td>#{libro.edicion}</td>
+                                                    <td>#{libro.nombreCategoria}</td>
+                                                <td class="td-actions text-right">
+                                                    
+                                                    <h:form>
+                                                        <h:commandLink styleClass="btn btn-success" value="" action="#{crudLibrosBean.marcarEditarLibro(libro)}">
+                                                        <i class="material-icons">edit</i>
+                                                        <f:ajax execute="@this" render="frmModalEdit" onevent="onClickEdit"></f:ajax>
+                                                    </h:commandLink>
+                                                    </h:form>
+                                                </td>
+                                            </tr>
+                                            </ui:repeat>                                        
+                                                                                                                               
+                                        </tbody>
+                                    </table>    
+                                            </h:panelGroup>                                                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+            </div>
+          <!-- Classic Modal -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                              <i class="material-icons">clear</i>
+                          </button>
+                          <h4 class="modal-title">Agregar/Editar Libros</h4>
+                      </div>
+                      <h:form id="frmModalEdit">
+                          <div class="modal-body">
+                              <div class="form-group">
+                                  <label for="nombreLibro" class="bmd-label-floating" >Nombre libro</label>
+                                  <h:inputText id="nombreLibro" value="#{crudLibrosBean.libroEdit.nombre}" styleClass="form-control"></h:inputText>                      
+                              </div>
+                              <div class="form-group">
+                                  <h:selectOneMenu id="categoriaLibro" styleClass="selectpicker" title="Categoria" value="#{crudLibrosBean.libroEdit.id_categoria}">
+                                      <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                                      <f:passThroughAttribute name="data-size" value="#{crudLibrosBean.opcionesCategoria.size}"></f:passThroughAttribute>                                      
+                                      <f:selectItems value="#{crudLibrosBean.opcionesCategoria}" />
+                                  </h:selectOneMenu>
+                              </div>
+                              <div class="form-group">
+                                  <h:selectOneMenu id="estanteLibro" styleClass="selectpicker" title="Estante" value="#{crudLibrosBean.libroEdit.id_estante}">
+                                      <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                                      <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>                                      
+                                      <f:selectItems value="#{crudLibrosBean.opcionesEstante}" />
+                                  </h:selectOneMenu>
+                              </div>
+                              <div class="form-group">
+                                  <label for="descripcion" class="bmd-label-floating" >Descripcion</label>
+                                  <h:inputTextarea id="descripcionEstante" value="#{crudLibrosBean.libroEdit.descripcion}" styleClass="form-control" rows="4" cols="50"></h:inputTextarea>                                           
+                              </div>
+                              <div class="form-group">
+                                  <label for="unidadesPrestar" class="bmd-label-floating" >Unidadades prestar</label>
+                                  <h:inputText id="unidadesPrestar" value="#{crudLibrosBean.libroEdit.unidades_para_prestar}" styleClass="form-control">
+                                      <f:passThroughAttribute name="type" value="number"></f:passThroughAttribute>
+                                  </h:inputText>                      
+                              </div>
+                              <div class="form-group">
+                                  <label for="nota" class="bmd-label-floating" >Nota</label>
+                                  <h:inputTextarea id="nota" value="#{crudLibrosBean.libroEdit.nota}" styleClass="form-control" rows="4" cols="50"></h:inputTextarea>                                           
+                              </div>
+                              <div class="form-group">
+                                  <label for="edicion" class="bmd-label-floating" >Edicion</label>
+                                  <h:inputText id="edicion" value="#{crudLibrosBean.libroEdit.edicion}" styleClass="form-control"></h:inputText>                      
+                              </div>                             
+                              <div class="form-group">
+                                  <label for="fechaPublicacion" class="bmd-label-floating" >Fecha publicacion</label>
+                                  <h:inputText id="fechaPublicacion" value="#{crudLibrosBean.libroEdit.fecha_publicacion}" styleClass="form-control">                                      
+                                      <f:passThroughAttribute name="type" value="date"></f:passThroughAttribute>
+                                  </h:inputText>                      
+                              </div>
+                              <div class="form-group">
+                                  <label for="lugarPublicacion" class="bmd-label-floating" >Lugar publicacion</label>
+                                  <h:inputText id="lugarPublicacion" value="#{crudLibrosBean.libroEdit.lugar_publicacion}" styleClass="form-control"></h:inputText>                      
+                              </div>
+                              <div class="form-group">
+                                  <label for="Isbn" class="bmd-label-floating" >ISBN</label>
+                                  <h:inputText id="Isbn" value="#{crudLibrosBean.libroEdit.isbn}" styleClass="form-control"></h:inputText>                      
+                              </div>
+                              <div class="form-group">
+                                  <label for="autores" class="bmd-label-floating" >Autores</label>
+                                  <h:inputText id="autores" value="#{crudLibrosBean.libroEdit.nombreAutor}" styleClass="form-control"></h:inputText>                      
+                              </div>                              
+                              <h:inputHidden id="codigoItem" value="#{crudLibrosBean.libroEdit.id_item}"></h:inputHidden>
+                              <h:inputHidden id="codigoLibro" value="#{crudLibrosBean.libroEdit.id_libro}"></h:inputHidden>
+                          </div>
+                          <div class="modal-footer">                
+                              <h:commandButton value="Guardar" action="#{crudLibrosBean.agregarEditarLibro}" styleClass="btn btn-success"/> &#160;
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                          </div>
+                      </h:form>
+
+                  </div>
+              </div>
+          </div>
+
+          
+<!--  End Modal -->
+
+        </ui:define>     
+        <ui:define name="scripts">
+            <script>
+                
+                //metodo de busqueda, para mostrar un loading
+            function onEventFunction(data) {
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;
+
+                case "complete": // After the ajax response is arrived.
+                console.log("Ajax complete");
+                break;
+
+                case "success": // After update of HTML DOM based on ajax response..
+                swal.close();
+                break;
+    }
+}
+            //Evento para cuando se hace click en el boton de Editar
+            function onClickEdit(data){
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;
+
+                case "success": // After update of HTML DOM based on ajax response..
+                swal.close();
+                
+                //Activate bootstrap-select
+                if ($(".selectpicker").length != 0) {
+                    $(".selectpicker").selectpicker();
+                }
+                
+                //Levantar el modal
+                $("#myModal").modal('show');
+                break;
+            }
+        }
+            $(document).ready(function(){
+               
+                //init DateTimePickers
+                md.initFormExtendedDatetimepickers();
+                
+               $('#btnNuevoLibro').on('click', function(e){
+                    e.preventDefault();
+                   //Limpiar todos los campos
+                   $("#frmModalEdit\\:nombreLibro").val('');
+                   $('#frmModalEdit\\:categoriaLibro').val('');                   
+                   $('#frmModalEdit\\:estanteLibro').val('');
+                   $('.selectpicker').selectpicker('refresh');
+                   
+                   $('#frmModalEdit\\:descripcionEstante').val('');
+                   $('#frmModalEdit\\:unidadesPrestar').val(0);
+                   $('#frmModalEdit\\:nota').val('');
+                   $('#frmModalEdit\\:edicion').val('');
+                   $('#frmModalEdit\\:autores').val('');
+                   $('#frmModalEdit\\:lugarPublicacion').val('');
+                   $('#frmModalEdit\\:Isbn').val('');
+                   $('#frmModalEdit\\:fechaPublicacion').val('');
+                   $('#frmModalEdit\\:autores').val('');
+                   $('#frmModalEdit\\:codigoItem').val(0);
+                   $('#frmModalEdit\\:codigoLibro').val(0);
+                   //Levantar el modal
+                   $("#myModal").modal('show');
+               });
+            });
+            </script>
+        </ui:define>
+    </ui:composition>   
+    
+    
+</html>
+
