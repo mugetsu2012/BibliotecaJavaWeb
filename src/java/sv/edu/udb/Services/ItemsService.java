@@ -208,7 +208,7 @@ public class ItemsService extends ServiceBase {
                     .collect(Collectors.toList());
         }
         
-        if(idCategoria != null){          
+        if(idCategoria != null && idCategoria != 0){          
             libros = libros.stream().filter(p -> p.id_categoria == idCategoria)
                     .collect(Collectors.toList());
         }

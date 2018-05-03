@@ -75,11 +75,11 @@ public class CrudEstantesBean implements Serializable {
         this.estanteEdit = estante;
     }
 
-  public String getInput() {
+    public String getInput() {
     return input;
   }
 
-  public void setInput(String input) {
+    public void setInput(String input) {
     this.input = input;
   }
   
