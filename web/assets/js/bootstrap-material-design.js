@@ -6287,7 +6287,7 @@ var Autofill = function ($$$1) {
       //  (because user can select from the autofill dropdown only when the input has focus)
       var focused = null;
       $$$1(document).on("focus", "input", function (event) {
-        var $inputs = $$$1(event.currentTarget).closest("form").find("input").not("[type=file]");
+        var $inputs = $$$1(event.currentTarget).closest("form").find("input").not("[type=file]").not('[class*="picker"]');
         focused = setInterval(function () {
           $inputs.each(function (index, element) {
             var $element = $$$1(element);
@@ -6414,10 +6414,10 @@ var BootstrapMaterialDesign = function ($$$1) {
     },
     text: {
       // omit inputs we have specialized components to handle - we need to match text, email, etc.  The easiest way to do this appears to be just omit the ones we don't want to match and let the rest fall through to this.
-      selector: ["input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=file]):not([type=button]):not([type=submit]):not([type=reset])"]
+      selector: ["input.form-control:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=file]):not([type=button]):not([type=submit]):not([type=reset])"]
     },
     textarea: {
-      selector: ["textarea"]
+      selector: ["textarea.form-control"]
     },
     arrive: true,
     // create an ordered component list for instantiation
@@ -6456,14 +6456,15 @@ var BootstrapMaterialDesign = function ($$$1) {
           var jqueryFn = "bmd" + componentName;
 
           try {
-            // safely instantiate component on selector elements with config, report errors and move on.
-            // console.debug(`instantiating: $('${selector}')[${jqueryFn}](${componentConfig})`) // eslint-disable-line no-console
+          //   safely instantiate component on selector elements with config, report errors and move on.
+          //   console.debug(`instantiating: $('${selector}')[${jqueryFn}](${componentConfig})`) // eslint-disable-line no-console
             $$$1(selector)[jqueryFn](componentConfig); // add to arrive if present and enabled
 
             if (document.arrive && _this.config.arrive) {
               $document.arrive(selector, function () {
                 // eslint-disable-line no-loop-func
                 $$$1(this)[jqueryFn](componentConfig);
+
               });
             }
           } catch (e) {
