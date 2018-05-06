@@ -1,0 +1,9 @@
+insert into catalogo_roles(rol,descripcion) values('Admin','Admin del sistema');
+insert into catalogo_roles(rol,descripcion) values('Alumno','Usuario del tipo alumno');
+
+insert into catalogo_roles(rol,descripcion) values('Profesor','Usuario del tipo profesor');
+
+insert into usuario values('admin',1,'admin123',1)
+
+insert into datos_personales(id_carne,nombre,apellido,genero,email,telefono,direccion)
+values ('admin','Administradorito','Admon',1,'admin@admin.com','22231205','La casa del admin')
