@@ -115,6 +115,7 @@ and open the template in the editor.
                             <span class="navbar-toggler-icon icon-bar"></span>
                             <span class="navbar-toggler-icon icon-bar"></span>
                         </button>
+                           <h:panelGroup rendered="#{loginBean.estaLogueado}">
                         <div class="collapse navbar-collapse justify-content-end">
                             
                             <ul class="navbar-nav">                                
@@ -128,12 +129,21 @@ and open the template in the editor.
 
                                         </p>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#pablo">Salir</a>                                        
-                                    </div>
+                                 
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                            <h:form>
+                                                <h:commandLink styleClass="dropdown-item" value="Salir" action="#{loginBean.logOut()}">
+                                                    
+                                                </h:commandLink>
+                                            </h:form>
+                                            
+                                        </div>
+                                  
+                                    
                                 </li>                               
                             </ul>
                         </div>
+                          </h:panelGroup>
                     </div>
                 </nav>
                 <!-- End Navbar -->
