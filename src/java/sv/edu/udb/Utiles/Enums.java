@@ -5,17 +5,37 @@
  */
 package sv.edu.udb.Utiles;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Douglas
  */
-public class Enums {
+public  class Enums {
     
-    public enum Roles {
+    public static enum Roles {
         Admin(1), Alumno(2),Profesor(3);
         
-        private final int id;
-        Roles(int id) { this.id = id; }
-        public int getValue() { return id; }
+        private int value;
+        private static Map map = new HashMap<>();
+
+        private Roles(int value) {
+            this.value = value;
+        }
+
+        static {
+            for (Roles rol : Roles.values()) {
+                map.put(rol.value, rol);
+            }
+        }
+
+        public static Roles valueOf(int rol) {
+            return (Roles) map.get(rol);
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 }
