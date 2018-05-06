@@ -24,6 +24,38 @@ import sv.edu.udb.Utiles.UtilesSession;
 public class LoginBean implements Serializable {
 
     /**
+     * @return the usuarioActual
+     */
+    public String getUsuarioActual() {
+        HttpSession session = UtilesSession.getSession();        
+        return session.getAttribute("usuario") != null ? session.getAttribute("usuario").toString(): null;
+    }
+
+    /**
+     * @param usuarioActual the usuarioActual to set
+     */
+    public void setUsuarioActual(String usuarioActual) {
+        this.usuarioActual = usuarioActual;
+    }
+
+    /**
+     * @return the rolActual
+     */
+    public Enums.Roles getRolActual() {
+        String rolString = UtilesSession.getRolActual();
+        int rolInt = Integer.parseInt(rolString);
+        Enums.Roles rol = Enums.Roles.valueOf(rolInt);
+        return rol;       
+    }
+
+    /**
+     * @param rolActual the rolActual to set
+     */
+    public void setRolActual(Enums.Roles rolActual) {
+        this.rolActual = rolActual;
+    }
+
+    /**
      * @return the estaLogueado
      */
     public boolean isEstaLogueado() {
@@ -102,6 +134,9 @@ public class LoginBean implements Serializable {
      private String usuario;
      private String passWord;
      private String error;
+     private Enums.Roles rolActual;
+     private String usuarioActual;
+     
     /**
      * Creates a new instance of LoginBean
      */
@@ -129,10 +164,11 @@ public class LoginBean implements Serializable {
             try{
                 //Si es un alumno lo mandamos al libro
                 if(user.id_catalogo_roles == Enums.Roles.Alumno.getValue()){
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("libros.xhtml");
+                    //Esto debe llevar a la pantalla de prestamos
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
                 }
                 else{ //Sino al dashboard
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("libros.xhtml");
                 }
                 
             }

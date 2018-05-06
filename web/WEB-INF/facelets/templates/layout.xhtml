@@ -50,32 +50,35 @@ and open the template in the editor.
                         <div class="user-info">
                             <a data-toggle="collapse" href="#collapseExample" class="username">
                                 <span>
-                                    Admin
+                                    #{loginBean.usuarioActual}
                                     
                                 </span>
                             </a>                            
                         </div>
                     </div>
                     <ul class="nav">                       
-                        <li class="nav-item active">
-                            <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
+                        <li class="nav-item active" id="padreCatalogosBar">
+                            <a class="nav-link" data-toggle="collapse" href="#catalogosBar">
                                 <i class="material-icons">apps</i>
                                 <p> Catalogos
                                     <b class="caret"></b>
                                 </p>
                             </a>
-                            <div class="collapse" id="componentsExamples">
+                            <div class="collapse" id="catalogosBar">
                                 <ul class="nav">
-                                    <li class="nav-item ">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
                                         <a class="nav-link" href="./faces/estantes.xhtml">
                                             <span class="sidebar-mini"> E </span>
                                             <span class="sidebar-normal"> Estantes </span>
                                         </a>
-                                    </li>                                    
+                                    </li> 
+                                    </h:panelGroup>
+                                                                       
                                 </ul>
                             </div>
                         </li>                       
-                        <li class="nav-item">
+                        <li class="nav-item" id="padreItemsBar">
                             <a class="nav-link" data-toggle="collapse" href="#itemsBar">
                                 <i class="material-icons">book</i>
                                 <p> Items
@@ -84,12 +87,15 @@ and open the template in the editor.
                             </a>
                             <div class="collapse" id="itemsBar">
                                 <ul class="nav">
-                                    <li class="nav-item ">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
                                         <a class="nav-link" href="./faces/libros.xhtml">
                                             <span class="sidebar-mini"> L </span>
                                             <span class="sidebar-normal"> Libros </span>
                                         </a>
-                                    </li>                                    
+                                    </li> 
+                                    </h:panelGroup>
+                                                                       
                                 </ul>
                             </div>
                         </li>
@@ -222,6 +228,19 @@ and open the template in the editor.
     <!-- demo init -->
     <script src="./assets/js/plugins/demo.js"></script>  
     
+    <script>
+        $(document).ready(function(){      
+            
+            
+            if($("#catalogosBar &gt; ul").children().length &lt;= 0){
+                $("#padreCatalogosBar").remove();
+            }
+            
+            if($("#itemsBar &gt; ul").children().length &lt;= 0){
+                $("#padreItemsBar").remove();
+            }
+        });
+    </script>
     <ui:insert name="scripts"></ui:insert>
 </html>
 
