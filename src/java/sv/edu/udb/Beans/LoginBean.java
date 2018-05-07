@@ -163,12 +163,12 @@ public class LoginBean implements Serializable {
             //Intentamos redirigir a una pagina en concreto
             try{
                 //Si es un alumno lo mandamos al libro
-                if(user.id_catalogo_roles == Enums.Roles.Alumno.getValue()){
-                    //Esto debe llevar a la pantalla de prestamos
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+                if(user.id_catalogo_roles == Enums.Roles.Admin.getValue()){
+                    
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("prestamos.xhtml");
                 }
-                else{ //Sino al dashboard
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("libros.xhtml");
+                else{ 
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("misprestamos.xhtml");
                 }
                 
             }

@@ -15,11 +15,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import sv.edu.udb.Data.modelos.Devolucion;
 import sv.edu.udb.Data.modelos.Item;
 import sv.edu.udb.Data.modelos.Parametros;
 import sv.edu.udb.Data.modelos.Prestamo;
 import sv.edu.udb.Data.modelos.Usuario;
+import sv.edu.udb.Utiles.Enums;
 
 /**
  *
@@ -35,8 +37,9 @@ public class PrestamosService extends ServiceBase {
         
         List<Prestamo> prestamos = new ArrayList<Prestamo>();
         
-        String query = "select * from prestamo left join devolucion "
-                + "on devolucion.id_prestamo = prestamo.id_prestamo where devolucion.id_prestamo is null";
+        String query = "select * from prestamo as p left join devolucion as d \n" +
+                            " on d.id_prestamo = p.id_prestamo\n" +
+                            " inner join item as i on i.id_item = p.id_item\n";
         
         ResultSet rs = conexion.RealizarQuery(query);
         
@@ -50,11 +53,54 @@ public class PrestamosService extends ServiceBase {
                 prestamo.fecha_pactada = rs.getString("fecha_pactada");
                 prestamo.fecha_prestamo = rs.getString("fecha_prestamo");
                 prestamo.descripcion = rs.getString("descripcion");
+                prestamo.fechaDevolucion = rs.getString("fecha_devolucion");
+                prestamo.moraCancelada = rs.getDouble("mora_cancelada");
+                prestamo.nombreItem = rs.getString("nombre");
                 prestamos.add(prestamo);
                 
             }
         } catch(SQLException e){
             System.out.println("Error: " + e.getMessage());
+        }
+        
+        return prestamos;
+    }
+    
+    public List<Prestamo> getListaPrestamoFiltros(String fechaInicio, String fechaFin, String carneSolicitante){
+        
+        List<Prestamo> prestamos = new ArrayList<Prestamo>();
+        
+        String query = "select * from prestamo as p left join devolucion as d \n" +
+                        " on d.id_prestamo = p.id_prestamo\n" +
+                        " inner join item as i on i.id_item = p.id_item\n" +
+                        " where p.fecha_prestamo >= '"+fechaInicio+"' and p.fecha_prestamo <= '"+fechaFin+"'";
+        
+        ResultSet rs = conexion.RealizarQuery(query);
+        
+        try{
+            while(rs.next()){
+                Prestamo prestamo = new Prestamo();
+                prestamo.id_prestamo = rs.getLong("id_prestamo");
+                prestamo.id_item = rs.getLong("id_item");
+                prestamo.id_carne_autoriza = rs.getString("id_carne_prestamista");
+                prestamo.id_carne_solicita = rs.getString("id_carne_solicitante");
+                prestamo.fecha_pactada = rs.getString("fecha_pactada");
+                prestamo.fecha_prestamo = rs.getString("fecha_prestamo");
+                prestamo.descripcion = rs.getString("descripcion");
+                prestamo.fechaDevolucion = rs.getString("fecha_devolucion");
+                prestamo.moraCancelada = rs.getDouble("mora_cancelada");
+                prestamo.nombreItem = rs.getString("nombre");
+                prestamos.add(prestamo);
+                
+            }
+        } catch(SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        
+        //En este punto ya hay libros, toca filtrarlos
+        if(!carneSolicitante.isEmpty()){
+            prestamos = prestamos.stream().filter(p -> p.id_carne_solicita.toLowerCase().equals(carneSolicitante.toLowerCase()))
+                    .collect(Collectors.toList());
         }
         
         return prestamos;
@@ -146,12 +192,18 @@ public class PrestamosService extends ServiceBase {
     public void realizarDevolucion(Devolucion devolucion){
         boolean prestamoEnMora = prestamoEnMora(devolucion.id_prestamo);
         if(prestamoEnMora){
-            
+            BigDecimal totalMora = totalMora(devolucion.id_prestamo);
+            if(totalMora.compareTo(devolucion.mora_cancelada) == 0){
+                //Como no está en mora, solo hacemos el insert normalmente
+                String query = "insert into devolucion (id_prestamo, fecha_devolucion,mora_cancelada,descripcion)\n" +
+                "values ("+devolucion.id_prestamo+",'"+getFechaHoraActual()+"',"+devolucion.mora_cancelada+",'"+devolucion.descripcion+"')";
+                conexion.ejecutarQuery(query);
+            }
         }
         else {
             //Como no está en mora, solo hacemos el insert normalmente
             String query = "insert into devolucion (id_prestamo, fecha_devolucion,mora_cancelada,descripcion)\n" +
-                "values ("+devolucion.id_prestamo+",'"+getFechaHoraActual()+"',null,"+devolucion.descripcion+")";
+                "values ("+devolucion.id_prestamo+",'"+getFechaHoraActual()+"',null,'"+devolucion.descripcion+"')";
             conexion.ejecutarQuery(query);
         }
     }
@@ -178,7 +230,7 @@ public class PrestamosService extends ServiceBase {
         Parametros parametros = adminService.getParametros();
         
         //Sacamos el limite con base en si es alumno o profesor
-        int limite = user.id_catalogo_roles == 2 ? parametros.cantidad_prestar_alumno : parametros.cantidad_prestar_profesor;
+        int limite = user.id_catalogo_roles == Enums.Roles.Alumno.getValue() ? parametros.cantidad_prestar_alumno : parametros.cantidad_prestar_profesor;
         
         //Si ya tiene prestados una cantidad de items igual o superior al limte
         if(totalPrestamosActivos >= limite){
@@ -267,7 +319,7 @@ public class PrestamosService extends ServiceBase {
         
         String query = "select count(*) as totalActivos  from prestamo  as p\n" +
             "left join devolucion as d on d.id_prestamo = p.id_prestamo\n" +
-            "where id_carne_solicitante = 'op130045' and d.id_devolucion is null";
+            "where id_carne_solicitante = '"+carne+"' and d.id_devolucion is null";
         
         ResultSet rs = conexion.RealizarQuery(query);
         int totalPrestamosActivos = 0;
