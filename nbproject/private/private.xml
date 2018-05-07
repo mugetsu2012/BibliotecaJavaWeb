@@ -3,15 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/src/java/sv/edu/udb/Data/modelos/Usuario.java</file>
+            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/web/usuarios.xhtml</file>
+            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/src/java/sv/edu/udb/Services/AdminService.java</file>
             <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/web/libros.xhtml</file>
-            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/web/misprestamos.xhtml</file>
-            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/src/java/sv/edu/udb/Beans/MisPrestamosBean.java</file>
-            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/src/java/sv/edu/udb/Beans/LoginBean.java</file>
-            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/web/prestamos.xhtml</file>
-            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/src/java/sv/edu/udb/Beans/PrestamoBean.java</file>
-            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/web/WEB-INF/facelets/templates/layout.xhtml</file>
-            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/web/login.xhtml</file>
-            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/src/java/sv/edu/udb/Utiles/AuthorizationFilter.java</file>
+            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/src/java/sv/edu/udb/Data/modelos/DatosPersonales.java</file>
+            <file>file:/C:/Users/Douglas/Documents/MisRepos/BibliotecaJavaWeb/src/java/sv/edu/udb/Beans/CrudUsuariosBean.java</file>
         </group>
     </open-files>
 </project-private>

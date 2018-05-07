@@ -133,6 +133,27 @@ and open the template in the editor.
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item" id="padreUsersBar">
+                            <a class="nav-link" data-toggle="collapse" href="#usersBar">
+                                <i class="material-icons">face</i>
+                                <p> Usuarios
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="usersBar">
+                                <ul class="nav">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                        <a class="nav-link" href="./faces/usuarios.xhtml">
+                                            <span class="sidebar-mini"> U </span>
+                                            <span class="sidebar-normal"> Usuarios </span>
+                                        </a>
+                                    </li> 
+                                    </h:panelGroup>
+                                                                       
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -276,6 +297,10 @@ and open the template in the editor.
             
             if($("#itemsPrestamos &gt; ul").children().length &lt;= 0){
                 $("#padreItemsPrestamos").remove();
+            }
+            
+            if($("#usersBar &gt; ul").children().length &lt;= 0){
+                $("#padreUsersBar").remove();
             }
         });
     </script>
