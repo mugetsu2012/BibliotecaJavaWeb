@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:composition template="/WEB-INF/facelets/templates/layout.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Usuarios" />
+        </ui:define>
+        <ui:define name="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card ">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">search</i>
+                                </div>
+                                <h4 class="card-title">Filtros</h4>
+                            </div>
+                            <h:form>
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="bsqCarne" class="bmd-label-floating">Carne</label>                                                
+                                                <h:inputText id="bsqCarne" value="#{crudUsuariosBean.carne}" styleClass="form-control"></h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">                                            
+                                            <h:selectOneMenu id="bsqRoles" styleClass="selectpicker" title="Roles" value="#{crudUsuariosBean.idRol}">
+                                                <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                                                <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>
+                                                <f:selectItem itemValue="0" itemLabel="Todos los roles" >                                                    
+                                                    <f:passThroughAttribute name="selected" value="selected"></f:passThroughAttribute>
+                                                </f:selectItem>
+                                                <f:selectItem itemValue="1" itemLabel="Admin" />                                                   
+                                                <f:selectItem itemValue="2" itemLabel="Alumno" />                                                   
+                                                <f:selectItem itemValue="3" itemLabel="Profesor" />                                                   
+                                                
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-sm-4">                                            
+                                            <h:selectOneMenu id="bsqEstados" styleClass="selectpicker" title="Estado" value="#{crudUsuariosBean.estado}">
+                                                <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                                                <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>
+                                                <f:selectItem itemValue="4" itemLabel="Todos los estados" >                                                    
+                                                    <f:passThroughAttribute name="selected" value="selected"></f:passThroughAttribute>
+                                                </f:selectItem>
+                                                <f:selectItem itemValue="1" itemLabel="Activos" />   
+                                                <f:selectItem itemValue="0" itemLabel="Inactivos" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>                   
+                            </div>
+                            <div class="card-footer ">                                
+
+                                <h:commandButton styleClass="btn btn-fill btn-rose" value="Buscar" id="btnBuscar"
+                                                 action="#{crudUsuariosBean.buscarUsuarios}">
+                                    <f:ajax execute="@form" render="tablaDatos" onevent="onEventFunction"></f:ajax>
+                                </h:commandButton>
+                            </div>
+                            </h:form>
+                            
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">supervisor_account</i>
+                                </div>
+                                <h4 class="card-title">Usuarios</h4>
+
+                            </div>
+                            <div class="card-body">
+                                <div class="text-left">
+                                    <button type="button" id="btnNuevoUsuario" class="btn btn-success btn-fill btn-wd">
+                                        Nuevo<div class="ripple-container"></div>
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <h:panelGroup id="tablaDatos">
+                                                <table class="table">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Carne</th>
+                                                <th>Rol</th>
+                                                <th>Nombre</th>
+                                                <th>Apellido</th>
+                                                <th>Estado</th>
+                                                <th class="text-right">Editar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ui:repeat value="#{crudUsuariosBean.usuarios}" var="usuario">
+                                                <tr>
+                                                
+                                                    <td>#{usuario.id_carne}</td>
+                                                    <td>#{usuario.nombreRol}</td>
+                                                    <td>#{usuario.nombre}</td>
+                                                    <td>#{usuario.apellido}</td>                                                
+                                                    <td>#{usuario.estado == 1 ? "Activo" : "Inactivo"}</td>
+                                                <td class="td-actions text-right">                                                    
+                                                    <h:form>
+                                                        <h:commandLink styleClass="btn btn-success" value="" action="#{crudUsuariosBean.marcarEditarUsuario(usuario)}">
+                                                        <i class="material-icons">edit</i>
+                                                        <f:ajax execute="@this" render="frmModalEdit" onevent="onClickEdit"></f:ajax>
+                                                    </h:commandLink>
+                                                    </h:form>
+                                                </td>
+                                            </tr>
+                                            </ui:repeat>                                        
+                                                                                                                               
+                                        </tbody>
+                                    </table>    
+                                            </h:panelGroup>                                                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+            </div>
+          <!-- Classic Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="material-icons">clear</i>
+                </button>
+                <h4 class="modal-title">Agregar/Editar Estantes</h4>
+            </div>
+            <h:form id="frmModalEdit">
+                <div class="modal-body">
+                    <h:panelGroup rendered="#{crudUsuariosBean.usuarioEdit.id_carne == null}">
+                        <div class="form-group">
+                            <label for="idCarne" class="bmd-label-floating" >Carne</label>
+                            <h:inputText id="idCarne" value="#{crudUsuariosBean.usuarioEdit.id_carne}" styleClass="form-control"></h:inputText>                      
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{crudUsuariosBean.usuarioEdit.id_carne != null}">
+                        <div class="form-group">
+                            <label for="idCarneR" class="bmd-label-floating" >Carne</label>
+                            <h:inputText id="idCarneR" value="#{crudUsuariosBean.usuarioEdit.id_carne}" styleClass="form-control">
+                                <f:passThroughAttribute name="readonly" value="readonly"></f:passThroughAttribute>
+                            </h:inputText>                      
+                        </div>
+                    </h:panelGroup>
+                 <div class="form-group">
+                        <label for="passwordUser" class="bmd-label-floating" >Password</label>
+                        <h:inputSecret id="passwordUser" value="#{crudUsuariosBean.usuarioEdit.passWord}" styleClass="form-control" redisplay="true">                            
+                        </h:inputSecret>                   
+                    </div>
+                <div class="form-group">
+                    <h:selectOneMenu id="userRol" styleClass="selectpicker" title="Roles" value="#{crudUsuariosBean.usuarioEdit.id_catalogo_roles}">
+                        <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                        <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>                        
+                        <f:selectItem itemValue="1" itemLabel="Admin" />                                                   
+                        <f:selectItem itemValue="2" itemLabel="Alumno" />                                                   
+                        <f:selectItem itemValue="3" itemLabel="Profesor" />                                                   
+
+                    </h:selectOneMenu>
+                    </div>
+                    <div class="form-group">
+                        <h:selectOneMenu id="userEstado" styleClass="selectpicker" title="Estado" value="#{crudUsuariosBean.usuarioEdit.estado}">
+                            <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                            <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>                            
+                            <f:selectItem itemValue="1" itemLabel="Activo" />   
+                            <f:selectItem itemValue="0" itemLabel="Inactivo" />
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="form-group">
+                        <h:selectOneMenu id="userGenero" styleClass="selectpicker" title="Genero" value="#{crudUsuariosBean.usuarioEdit.genero}">
+                            <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                            <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>                            
+                            <f:selectItem itemValue="1" itemLabel="Masculino" />   
+                            <f:selectItem itemValue="0" itemLabel="Femenino" />
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreUser" class="bmd-label-floating" >Nombre</label>
+                        <h:inputText id="nombreUser" value="#{crudUsuariosBean.usuarioEdit.nombre}" styleClass="form-control">                            
+                        </h:inputText>                      
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoUser" class="bmd-label-floating" >Apellido</label>
+                        <h:inputText id="apellidoUser" value="#{crudUsuariosBean.usuarioEdit.apellido}" styleClass="form-control">                            
+                        </h:inputText>                      
+                    </div>
+                    <div class="form-group">
+                        <label for="emailUser" class="bmd-label-floating" >Email</label>
+                        <h:inputText id="emailUser" value="#{crudUsuariosBean.usuarioEdit.email}" styleClass="form-control">                            
+                        </h:inputText>                      
+                    </div>
+                    <div class="form-group">
+                        <label for="telUser" class="bmd-label-floating" >Telefono</label>
+                        <h:inputText id="telUser" value="#{crudUsuariosBean.usuarioEdit.telefono}" styleClass="form-control">                            
+                        </h:inputText>                      
+                    </div>
+                <div class="form-group">
+                      <label for="direccion" class="bmd-label-floating" >Direccion</label>
+                      <h:inputTextarea id="direccion" value="#{crudUsuariosBean.usuarioEdit.direccion}" styleClass="form-control" rows="4" cols="50"></h:inputTextarea>                                           
+                    </div>
+                    <h:inputHidden id="codigoDp" value="#{crudUsuariosBean.usuarioEdit.id_datos_personales}"></h:inputHidden>
+            </div>
+            <div class="modal-footer">                
+                <h:commandButton value="Guardar" action="#{crudUsuariosBean.agregarEditarUsuario()}" styleClass="btn btn-success"/>&nbsp;
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+            </h:form>
+            
+        </div>
+    </div>
+</div>
+<!--  End Modal -->
+    
+        </ui:define>     
+        <ui:define name="scripts">
+            <script>
+                
+                //metodo de busqueda, para mostrar un loading
+            function onEventFunction(data) {
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;
+
+                case "complete": // After the ajax response is arrived.
+                console.log("Ajax complete");
+                break;
+
+                case "success": // After update of HTML DOM based on ajax response..
+                swal.close();
+                break;
+    }
+}
+            //Evento para cuando se hace click en el boton de Editar
+            function onClickEdit(data){
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;
+
+                case "success": // After update of HTML DOM based on ajax response..
+                swal.close();
+                 $('.selectpicker').selectpicker('refresh');
+                //Levantar el modal                
+                $("#myModal").modal('show');
+                break;
+            }
+        }
+            $(document).ready(function(){
+               
+               $('#btnNuevoUsuario').on('click', function(e){
+                   
+                   e.preventDefault();
+                   //Limpiar todos los campos
+                   $("#frmModalEdit\\:idCarne").val('');
+                   $('#frmModalEdit\\:idCarneR').val('');                   
+                   $('#frmModalEdit\\:userRol').val('');
+                   $('#frmModalEdit\\:userEstado').val('');
+                   $('#frmModalEdit\\:userGenero').val('');                   
+                   
+                   
+                   $('#frmModalEdit\\:nombreUser').val('');
+                   $('#frmModalEdit\\:apellidoUser').val('');
+                   $('#frmModalEdit\\:emailUser').val('');
+                   $('#frmModalEdit\\:direccion').val('');
+                   $('#frmModalEdit\\:passwordUser').val(''); 
+                   $('#frmModalEdit\\:telUser').val(''); 
+                   $('#frmModalEdit\\:codigoDp').val(0);
+                   $('#frmModalEdit\\:idCarneR').prop('readonly', false);
+                   $('.selectpicker').selectpicker('refresh');
+                   
+                   //Levantar el modal
+                   $("#myModal").modal('show');
+               });
+            });
+            </script>
+        </ui:define>
+    </ui:composition>   
+    
+    
+</html>
+
