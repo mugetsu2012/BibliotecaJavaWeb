@@ -52,7 +52,7 @@ public class Categoria {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    private String nombre;
-    private long codigo;
-    private String descripcion;  
+    public String nombre;
+    public long codigo;
+    public String descripcion;  
 }
