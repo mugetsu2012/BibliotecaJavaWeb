@@ -154,6 +154,27 @@ and open the template in the editor.
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item" id="padreConfigBar">
+                            <a class="nav-link" data-toggle="collapse" href="#configBar">
+                                <i class="material-icons">settings</i>
+                                <p> Configuracion
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="configBar">
+                                <ul class="nav">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                        <a class="nav-link" href="./faces/parametros.xhtml">
+                                            <span class="sidebar-mini"> PR </span>
+                                            <span class="sidebar-normal"> Parametros </span>
+                                        </a>
+                                    </li> 
+                                    </h:panelGroup>
+                                                                       
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -168,7 +189,7 @@ and open the template in the editor.
                                     <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
                                 </button>
                             </div>
-                            <a class="navbar-brand" href="#pablo">Dashboard</a>
+                            <a class="navbar-brand" href="#"> <ui:insert name="title" /></a>
                         </div>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="sr-only">Toggle navigation</span>
@@ -302,6 +323,10 @@ and open the template in the editor.
             if($("#usersBar &gt; ul").children().length &lt;= 0){
                 $("#padreUsersBar").remove();
             }
+            
+            if($("#configBar &gt; ul").children().length &lt;= 0){
+                $("#padreConfigBar").remove();
+            }                        
         });
     </script>
     <ui:insert name="scripts"></ui:insert>
