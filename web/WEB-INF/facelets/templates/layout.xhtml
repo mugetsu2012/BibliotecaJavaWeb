@@ -56,7 +56,41 @@ and open the template in the editor.
                             </a>                            
                         </div>
                     </div>
-                    <ul class="nav">                       
+                    <ul class="nav">
+                        <li class="nav-item" id="padreItemsPrestamos">
+                            <a class="nav-link" data-toggle="collapse" href="#itemsPrestamos">
+                                <i class="material-icons">account_box</i>
+                                <p> Prestamos
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="itemsPrestamos">
+                                <ul class="nav">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                        <a class="nav-link" href="./faces/prestamos.xhtml">
+                                            <span class="sidebar-mini"> P </span>
+                                            <span class="sidebar-normal"> Prestamos </span>
+                                        </a>
+                                    </li> 
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/devoluciones.xhtml">
+                                                <span class="sidebar-mini"> D </span>
+                                                <span class="sidebar-normal"> Devoluciones </span>
+                                            </a>
+                                        </li> 
+                                    </h:panelGroup> 
+                                    <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/misprestamos.xhtml">
+                                                <span class="sidebar-mini"> MP </span>
+                                                <span class="sidebar-normal"> Mis prestamos </span>
+                                            </a>
+                                    </li> 
+                                </ul>
+                            </div>
+                        </li>
                         <li class="nav-item active" id="padreCatalogosBar">
                             <a class="nav-link" data-toggle="collapse" href="#catalogosBar">
                                 <i class="material-icons">apps</i>
@@ -238,6 +272,10 @@ and open the template in the editor.
             
             if($("#itemsBar &gt; ul").children().length &lt;= 0){
                 $("#padreItemsBar").remove();
+            }
+            
+            if($("#itemsPrestamos &gt; ul").children().length &lt;= 0){
+                $("#padreItemsPrestamos").remove();
             }
         });
     </script>
