@@ -41,6 +41,7 @@ public class Conexion {
             System.out.println("ERROR: Fallo en SQL: " + e2.getMessage());
         }
         
+        
         return null;
     }
 
@@ -51,8 +52,12 @@ public class Conexion {
         
         try{
             this.s.executeUpdate(query);
+            
         } catch(SQLException e){
             System.out.println("Error al ejecutar un query :" + e.getMessage());
+        } finally{
+            
+           
         }
              
     }
@@ -81,6 +86,8 @@ public class Conexion {
         catch(SQLException se){
             System.out.println("Error al insertar un dato :" + se.getMessage());
         }
+        
+        
         
         
         return id;

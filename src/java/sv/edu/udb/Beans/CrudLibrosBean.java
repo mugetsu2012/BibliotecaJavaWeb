@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.*;
 import sv.edu.udb.Data.modelos.*;
 import sv.edu.udb.Services.*;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -82,7 +81,6 @@ public class CrudLibrosBean implements Serializable {
     private String autoresBuscar;
     
     
-    
 
     /**
      * Creates a new instance of CrudLibrosBean
@@ -128,7 +126,7 @@ public class CrudLibrosBean implements Serializable {
     }
     
     public void marcarEditarLibro(Libro libro){
-        this.libroEdit = libro;
+        this.libroEdit = libro;        
     }
     
     public void construirOpcionesCategoria(){

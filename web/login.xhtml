@@ -1,0 +1,96 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:composition template="/WEB-INF/facelets/templates/layoutLogin.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Login" />
+        </ui:define>
+        <ui:define name="content">
+            <div class="col-md-4 col-sm-6 ml-auto mr-auto">
+                <h:form styleClass="form">
+                    <div class="card card-login card-hidden">
+                        <div class="card-header card-header-rose text-center">
+                            <h4 class="card-title">Log in</h4>
+                            <div class="social-line">                                    
+                            </div>
+                        </div>
+                        <div class="card-body ">                            
+                            <span class="bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="material-icons">face</i>
+                                        </span>
+                                    </div>
+                                    
+                                    <h:inputText id="txtUser" styleClass="form-control" value="#{loginBean.usuario}">
+                                        <f:passThroughAttribute name="placeholder" value="usuario"></f:passThroughAttribute>
+                                    </h:inputText>
+                                </div>
+                            </span>
+                           
+                            <span class="bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="material-icons">lock_outline</i>
+                                        </span>
+                                    </div>                                    
+                                    <h:inputSecret id="txtPass" styleClass="form-control" value="#{loginBean.passWord}">
+                                        <f:passThroughAttribute name="placeholder" value="password"></f:passThroughAttribute>
+                                    </h:inputSecret>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="card-footer justify-content-center">
+                            
+                            <h:commandButton value="Ingresar" styleClass="btn btn-rose btn-link btn-lg" action="#{loginBean.validarLogin()}">
+                                <f:ajax execute="@form" render="estadoLogin" onevent="onLoginFunction"></f:ajax>
+                            </h:commandButton>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+            <input type="hidden" value="#{loginBean.loginValido}" id="estadoLogin"/>
+        </ui:define>     
+        <ui:define name="scripts">
+            <script>
+                //Funcion llamada al darle al login
+                function onLoginFunction(data){
+                    var status = data.status;
+                    switch(status){
+                        case "begin":
+                            swal({});                
+                            swal.showLoading();
+                            break;
+                        
+                        case "success":
+                            var estadoLog = $("#estadoLogin").val();
+                            //Si el login fue exitoso, mandarlo al home
+                            if(estadoLog == "false"){
+                                swal(
+                                     'Crendenciales incorrectas',
+                                     'Las credenciales ingresadas no son validas. Favor revisar',
+                                     'warning'
+                                    );
+                            }
+                            break;
+                    }
+                }
+                
+                $(document).ready(function(){
+                demo.checkFullPageBackgroundImage();
+
+                setTimeout(function() {
+                    // after 1000 ms we add the class animated to the login/register card
+                    $('.card').removeClass('card-hidden');
+                    }, 700);
+                 });
+            </script>
+        </ui:define>
+    </ui:composition>   
+    
+    
+</html>
+
