@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import sv.edu.udb.Data.Conexion;
 import sv.edu.udb.Data.modelos.DatosPersonales;
 import sv.edu.udb.Data.modelos.Parametros;
@@ -191,12 +192,12 @@ public class AdminService extends ServiceBase {
         
         List<Usuario> usuarios = new ArrayList<Usuario>();
         
-        String query = "select u.id_carne, u.id_catalogo_roles, u.password, u.estado, dp.nombre, dp.apellido,c.rol "
+        String query = "select u.id_carne, u.id_catalogo_roles, u.password, u.estado, dp.nombre, dp.apellido,c.rol,dp.genero,dp.email,dp.telefono,dp.direccion,dp.id_datos_personales "
                 + " from usuario as u"
                 + " inner join datos_personales as dp on dp.id_carne = u.id_carne "
                 + " inner join catalogo_roles as c on c.id_catalogo_roles = u.id_catalogo_roles "
                 + " where (u.id_catalogo_roles = "+idRol+" or "+idRol+" = '0')\n" +
-            "and (u.id_carne = '"+carne+"' or "+carne+" is null) and (u.estado = "+estado+" or "+estado+" is NULL)";
+            " and (u.estado = "+estado+" or "+estado+" is NULL)";
         
         ResultSet rs = conexion.RealizarQuery(query);
         
@@ -210,13 +211,20 @@ public class AdminService extends ServiceBase {
                 user.nombre = rs.getString("nombre");
                 user.apellido = rs.getString("apellido");
                 user.nombreRol = rs.getString("rol");
+                user.genero = rs.getInt("genero");
+                user.email = rs.getString("email");
+                user.telefono = rs.getString("telefono");
+                user.direccion = rs.getString("direccion");
+                user.id_datos_personales = rs.getLong("id_datos_personales");
                 usuarios.add(user);
             }
         } catch (SQLException e){
             System.out.println("Error: " + e.getMessage());
         }
                 
-                
+        if(carne != null && carne.isEmpty() == false){
+            usuarios = usuarios.stream().filter(p-> p.id_carne.equals(carne)).collect(Collectors.toList());
+        }
         return usuarios;
         
     }

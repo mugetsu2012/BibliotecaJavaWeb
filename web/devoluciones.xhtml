@@ -1,0 +1,260 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:composition template="/WEB-INF/facelets/templates/layout.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Devoluciones" />
+        </ui:define>
+        <ui:define name="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card ">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">search</i>
+                                </div>
+                                <h4 class="card-title">Filtros</h4>
+                            </div>
+                            <h:form>
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="bsqFechaInicio" class="bmd-label-floating">Fecha inicio</label>                                                
+                                                <h:inputText id="bsqFechaInicio" value="#{devolucionBean.fechaInicioFiltro}" styleClass="form-control">
+                                                    <f:passThroughAttribute name="type" value="date"/>
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="bsqFechaFin" class="bmd-label-floating">Fecha fin</label>                                                
+                                                <h:inputText id="bsqFechaFin" value="#{devolucionBean.fechaFinFiltro}" styleClass="form-control">
+                                                    <f:passThroughAttribute name="type" value="date"/>
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="bsqCarne" class="bmd-label-floating">Carnet</label>                                                
+                                                <h:inputText id="bsqCarne" value="#{devolucionBean.carneFiltro}" styleClass="form-control">
+                                                    
+                                                </h:inputText>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>                   
+                            </div>
+                            <div class="card-footer ">                                
+
+                                <h:commandButton styleClass="btn btn-fill btn-rose" value="Buscar" id="btnBuscar"
+                                                 action="#{devolucionBean.filtrarPrestamo()}">
+                                    <f:ajax execute="@form" render="tablaDatos" onevent="onFiltroFunction"></f:ajax>
+                                </h:commandButton>
+                            </div>
+                            </h:form>
+                            
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">assignment</i>
+                                </div>
+                                <h4 class="card-title">Prestamos pendientes</h4>
+
+                            </div>
+                            <div class="card-body">                                
+                                <div class="table-responsive">
+                                    <h:panelGroup id="tablaDatos">
+                                                <table class="table">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Codigo Prestamo</th>
+                                                <th>Solicitante</th>                                                
+                                                <th>Fecha prestamo</th>
+                                                <th>Fecha pactadada</th>                                                
+                                                <th>Nombre item</th>  
+                                                <th>Accion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ui:repeat value="#{devolucionBean.prestamos}" var="prestamo">
+                                                <tr>                
+                                                    <td>#{prestamo.id_prestamo}</td>                                                    
+                                                    <td>#{prestamo.id_carne_solicita}</td>                                                    
+                                                    <td>#{prestamo.fecha_prestamo}</td>                                                    
+                                                    <td>#{prestamo.fecha_pactada}</td>                                                    
+                                                    <td>#{prestamo.nombreItem}</td>   
+                                                    <td class="td-actions text-center">                                                    
+                                                    <h:form>
+                                                        <h:commandLink styleClass="btn btn-success" value="" action="#{devolucionBean.marcarPrestamoInfo(prestamo)}">
+                                                        <i class="material-icons">info</i>
+                                                        <f:ajax execute="@this" render="frmModalEdit" onevent="onClickDevolucion"></f:ajax>
+                                                    </h:commandLink>
+                                                    </h:form>
+                                                </td>
+                                            </tr>
+                                            </ui:repeat>                                        
+                                                                                                                               
+                                        </tbody>
+                                    </table>    
+                                            </h:panelGroup>                                                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+            </div>
+          <!-- Classic Modal -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                              <i class="material-icons">clear</i>
+                          </button>
+                          <h4 class="modal-title">Realizar devolucion</h4>
+                      </div>
+                      <h:form id="frmModalEdit">
+                          <div class="modal-body">                              
+                              <div class="form-group">
+                                  <label for="codigoPrestamo" class="bmd-label-floating" >Codigo de prestamo</label>
+                                  <h:inputText id="codigoPrestamo" value="#{devolucionBean.idPrestamoActual}" styleClass="form-control">
+                                      <f:passThroughAttribute name="readonly" value="readonly"></f:passThroughAttribute>
+                                  </h:inputText>                      
+                              </div>
+                              <div class="form-group">
+                                  <label for="nombreItem" class="bmd-label-floating" >Nombre item</label>
+                                  <h:inputText id="nombreItem" value="#{devolucionBean.nombreItemActual}" styleClass="form-control">
+                                      <f:passThroughAttribute name="readonly" value="readonly"></f:passThroughAttribute>
+                                  </h:inputText>                      
+                              </div>
+                              <h:panelGroup rendered="#{devolucionBean.moraActual != null and devolucionBean.moraActual > 0.0}">
+                                  <p>Se tiene una mora de $ #{devolucionBean.getMoraActual() != null ? devolucionBean.getMoraActual() : 0}</p>
+                                  <div class="form-group">
+                                    <label for="moraPagar" class="bmd-label-floating" >Mora: </label>
+                                    <h:inputText id="moraPagar" value="#{devolucionBean.moraCancelada}" styleClass="form-control">
+                                        <f:passThroughAttribute name="type" value="number"></f:passThroughAttribute>
+                                    </h:inputText>                      
+                                  </div>
+                              </h:panelGroup>
+                              
+                              <div class="form-group">
+                                  <label for="descripcionDevolucion" class="bmd-label-floating" >Descripcion</label>
+                                  <h:inputTextarea id="descripcionDevolucion" value="#{devolucionBean.descripcionDevolucion}" styleClass="form-control" rows="4" cols="50"></h:inputTextarea>                                           
+                              </div>
+                          </div>
+                          <div class="modal-footer">                
+                              <h:commandButton value="Devolver" action="#{devolucionBean.realizarDevolucion()}" styleClass="btn btn-success">
+                                  <f:ajax execute="@form" render="containerMensajes" onevent="onDevolucionFunction"></f:ajax>
+                              </h:commandButton> &#160;
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                          </div>                          
+                      </h:form>
+
+                  </div>
+              </div>
+          </div>
+
+          
+<!--  End Modal -->
+
+
+
+<h:panelGroup id="containerMensajes">
+    <input type="hidden" id="estadoDevolucion" value="#{devolucionBean.devolucionExitosa}"/>
+    <input type="hidden" id="mensajeDevolucion" value="#{devolucionBean.mensajeDevolucion}"/>
+</h:panelGroup>
+
+        </ui:define>     
+        <ui:define name="scripts">
+            <script>
+                
+                //metodo de busqueda, para mostrar un loading
+            function onDevolucionFunction(data) {
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;               
+
+                case "success": // After update of HTML DOM based on ajax response..
+                
+                var estadoDevolucion = $("#estadoDevolucion").val();
+                
+                //Si el prestamo no fue exitoso
+                if(estadoDevolucion === "false"){
+                    var mensaje = $("#mensajeDevolucion").val();
+                    swal({
+                         type: 'warning',
+                        title: 'Oops...',
+                        text: mensaje,
+                    });
+                }
+                
+                break;
+    }
+}
+            //Evento para cuando filtran
+            function onFiltroFunction(data){
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;
+
+                case "success": // After update of HTML DOM based on ajax response..
+                swal.close();           
+                break;
+            }
+        }
+            
+            function onClickDevolucion(data){
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;
+
+                case "success": // After update of HTML DOM based on ajax response..
+                swal.close(); 
+                $("#myModal").modal('show');
+                break;
+                
+                }
+            }
+            $(document).ready(function(){
+               
+                //init DateTimePickers
+                md.initFormExtendedDatetimepickers();
+                
+                
+               
+            });
+            </script>
+        </ui:define>
+    </ui:composition>   
+    
+    
+</html>
+
