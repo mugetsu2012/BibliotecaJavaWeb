@@ -317,29 +317,29 @@ and open the template in the editor.
     <script src="./assets/js/plugins/demo.js"></script>  
 
     <script>
-                                $(document).ready(function(){
-
-
-                                if ($("#catalogosBar &gt; ul").children().length & lt; = 0){
-                                $("#padreCatalogosBar").remove();
-                                }
-
-                                if ($("#itemsBar &gt; ul").children().length & lt; = 0){
-                                $("#padreItemsBar").remove();
-                                }
-
-                                if ($("#itemsPrestamos &gt; ul").children().length & lt; = 0){
-                                $("#padreItemsPrestamos").remove();
-                                }
-
-                                if ($("#usersBar &gt; ul").children().length & lt; = 0){
-                                $("#padreUsersBar").remove();
-                                }
-
-                                if ($("#configBar &gt; ul").children().length & lt; = 0){
-                                $("#padreConfigBar").remove();
-                                }
-                                });
+        $(document).ready(function(){      
+            
+            
+            if($("#catalogosBar &gt; ul").children().length &lt;= 0){
+                $("#padreCatalogosBar").remove();
+            }
+            
+            if($("#itemsBar &gt; ul").children().length &lt;= 0){
+                $("#padreItemsBar").remove();
+            }
+            
+            if($("#itemsPrestamos &gt; ul").children().length &lt;= 0){
+                $("#padreItemsPrestamos").remove();
+            }
+            
+            if($("#usersBar &gt; ul").children().length &lt;= 0){
+                $("#padreUsersBar").remove();
+            }
+            
+            if($("#configBar &gt; ul").children().length &lt;= 0){
+                $("#padreConfigBar").remove();
+            }                        
+        });
     </script>
     <ui:insert name="scripts"></ui:insert>
 </html>
