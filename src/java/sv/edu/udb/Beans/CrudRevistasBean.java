@@ -83,7 +83,7 @@ public class CrudRevistasBean implements Serializable {
     public void init(){
         this.libros = itemsService.getListadoLibros("", null, "");
         this.revistas = itemsService.getListadoRevistas();
-        this.categorias = catalogosService.getCategorias();
+        this.categorias = catalogosService.getCategorias("");
         this.estantes = catalogosService.getEstantes(null);
         libroEdit = new Libro();
         revistaEdit = new Revista();

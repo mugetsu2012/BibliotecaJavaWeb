@@ -93,7 +93,7 @@ public class CrudLibrosBean implements Serializable {
     @PostConstruct
     public void init(){
         this.libros = itemsService.getListadoLibros("", null, "");
-        this.categorias = catalogosService.getCategorias();
+        this.categorias = catalogosService.getCategorias("");
         this.estantes = catalogosService.getEstantes(null);
         libroEdit = new Libro();
         construirOpcionesCategoria();

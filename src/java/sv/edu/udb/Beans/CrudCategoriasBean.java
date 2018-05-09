@@ -33,7 +33,7 @@ public class CrudCategoriasBean implements Serializable {
     
     @PostConstruct
     public void init(){
-        this.categorias = catalogosServices.getCategorias();
+        this.categorias = catalogosServices.getCategorias("");
         categoriaEdit = new Categoria();
     }
     
@@ -46,7 +46,7 @@ public class CrudCategoriasBean implements Serializable {
     }
     
     public void BuscarTexto(String texto){
-        this.categorias = catalogosServices.getCategorias();
+        this.categorias = catalogosServices.getCategorias(texto);
         this.categoriaEdit = null;
     }
     
@@ -62,7 +62,7 @@ public class CrudCategoriasBean implements Serializable {
         else{
             catalogosServices.editarCategoria(categoria);
         }
-        this.categorias = catalogosServices.getCategorias();
+        this.categorias = catalogosServices.getCategorias("");
     }
     
     public void marcarEditarCategoria(Categoria categoria){

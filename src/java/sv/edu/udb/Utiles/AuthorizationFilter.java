@@ -27,33 +27,32 @@ import javax.servlet.http.HttpSession;
  */
 @WebFilter(filterName = "AuthFilter", urlPatterns = {"*.xhtml"})
 public class AuthorizationFilter implements Filter {
-    
+
     private List<String> urlsPermitidasAdmin;
     private List<String> urlsPermitidasAlumnoProfesor;
-    
-    
-    public AuthorizationFilter(){
-        urlsPermitidasAdmin = Arrays.asList("login.xhtml","estantes.xhtml","libros.xhtml","prestamos.xhtml","devoluciones.xhtml","misprestamos.xhtml","usuarios.xhtml","parametros.xhtml","revistas.xhtml");
+
+    public AuthorizationFilter() {
+        urlsPermitidasAdmin = Arrays.asList("login.xhtml", "estantes.xhtml", "libros.xhtml", "prestamos.xhtml", "devoluciones.xhtml", "misprestamos.xhtml", "usuarios.xhtml", "parametros.xhtml", "revistas.xhtml", "categorias.xhtml");
         urlsPermitidasAlumnoProfesor = Arrays.asList("misprestamos.xhtml");
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        
+
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        try{
+        try {
             //Se sacan los request
             HttpServletRequest reqt = (HttpServletRequest) request;
             HttpServletResponse resp = (HttpServletResponse) response;
-            
+
             HttpSession ses = reqt.getSession();
-            
+
             //Obtenemos el uri para donde iba el user
             String reqURI = reqt.getRequestURI();
-            
+
             //Si no va para el el login, o esta obteniendo un recurso y no hay session lo mandamos al login
             if ((reqURI.indexOf("/login.xhtml") >= 0
                     || (ses != null && ses.getAttribute("usuario") != null)
@@ -63,62 +62,56 @@ public class AuthorizationFilter implements Filter {
             } else {
                 resp.sendRedirect(reqt.getContextPath() + "/faces/login.xhtml");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
 
     @Override
     public void destroy() {
-        
+
     }
-    
-    public boolean tienePermiso(String uri, HttpSession ses){
-        
+
+    public boolean tienePermiso(String uri, HttpSession ses) {
+
         //Primero ver que el uri tenga un xhtml
-        if(!uri.contains(".xhtml")){
+        if (!uri.contains(".xhtml")) {
             return true;
         }
-        
-        if(uri.indexOf("/login.xhtml") >= 0){
+
+        if (uri.indexOf("/login.xhtml") >= 0) {
             return true;
         }
-        
-        if(ses.getAttribute("rol") == null){
+
+        if (ses.getAttribute("rol") == null) {
             return false;
         }
-        
+
         //Se saca el rol y su enum
         String rolString = ses.getAttribute("rol").toString();
         int rolInt = Integer.parseInt(rolString);
         Enums.Roles rol = Enums.Roles.valueOf(rolInt);
-        
-        
+
         //Si es admin
-        if(rol == Enums.Roles.Admin){
-            return comprobarPaginas(uri,urlsPermitidasAdmin);           
+        if (rol == Enums.Roles.Admin) {
+            return comprobarPaginas(uri, urlsPermitidasAdmin);
+        } else if (rol == Enums.Roles.Alumno || rol == Enums.Roles.Profesor) {
+            return comprobarPaginas(uri, urlsPermitidasAlumnoProfesor);
         }
-        else if(rol == Enums.Roles.Alumno){
-            return comprobarPaginas(uri,urlsPermitidasAlumnoProfesor);      
+
+        return false;
+    }
+
+    public boolean comprobarPaginas(String uri, List<String> paginasPermitidas) {
+        List<String> result = paginasPermitidas.stream()
+                .filter(pagina -> uri.contains(pagina))
+                .collect(Collectors.toList());
+
+        if (result.size() > 0) {
+            return true;
+        } else {
+            return false;
         }
-        
-        return false;      
     }
-    
-    public boolean comprobarPaginas(String uri, List<String> paginasPermitidas){
-        List<String> result = paginasPermitidas.stream()                
-                .filter(pagina -> uri.contains(pagina))     
-                .collect(Collectors.toList()); 
-            
-            if(result.size() > 0){
-                return true;
-            }
-            else {
-                return false;
-            }
-    }
-    
-    
-    
-    
+
 }

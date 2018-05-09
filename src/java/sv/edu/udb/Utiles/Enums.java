@@ -12,11 +12,11 @@ import java.util.Map;
  *
  * @author Douglas
  */
-public  class Enums {
-    
+public class Enums {
+
     public static enum Roles {
-        Admin(1), Alumno(2),Profesor(3);
-        
+        Admin(1), Alumno(2), Profesor(3);
+
         private int value;
         private static Map map = new HashMap<>();
 
