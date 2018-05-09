@@ -33,7 +33,7 @@ public class AuthorizationFilter implements Filter {
     
     
     public AuthorizationFilter(){
-        urlsPermitidasAdmin = Arrays.asList("login.xhtml","estantes.xhtml","libros.xhtml","prestamos.xhtml","devoluciones.xhtml","misprestamos.xhtml","usuarios.xhtml","parametros.xhtml");
+        urlsPermitidasAdmin = Arrays.asList("login.xhtml","estantes.xhtml","libros.xhtml","prestamos.xhtml","devoluciones.xhtml","misprestamos.xhtml","usuarios.xhtml","parametros.xhtml","revistas.xhtml");
         urlsPermitidasAlumnoProfesor = Arrays.asList("misprestamos.xhtml");
     }
 

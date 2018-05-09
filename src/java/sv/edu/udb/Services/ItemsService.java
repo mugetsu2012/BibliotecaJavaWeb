@@ -84,7 +84,7 @@ public class ItemsService extends ServiceBase {
         long codigoItem = insertarItem(revista);
         
         String query = "insert into revista(id_item, edicion, editorial, lugar_lanzamiento,fecha_lanzamiento)\n" +
-            "values("+codigoItem+",'"+revista.edicion+"','"+revista.editorial+"','"+revista.editorial+"','"+revista.fecha_publicacion+"')";
+            "values("+codigoItem+",'"+revista.edicion+"','"+revista.editorial+"','"+revista.lugar_publicacion+"','"+revista.fecha_publicacion+"')";
         
         long codigoCd = conexion.realizarInsert(query);
         
@@ -348,7 +348,54 @@ public class ItemsService extends ServiceBase {
             }
         } catch (SQLException e){
             System.out.println("Error: "  + e.getMessage());
+        }        
+        
+        return revistas;
+        
+    }
+    
+    public List<Revista> getListadoRevistas(String nombre, Integer idCategoria){
+        
+        List<Revista> revistas = new ArrayList<Revista>();
+        
+        String query = "select r.id_revista, i.id_item,r.fecha_lanzamiento,r.lugar_lanzamiento, r.editorial,r.edicion, i.id_categoria, i.id_estante, i.nombre, i.descripcion, i.unidades_para_prestar, c.categoria\n" +
+            "from revista as r\n" +
+            "inner join item as i on i.id_item = r.id_item\n" +
+            "inner join categoria as c on c.id_categoria = i.id_categoria";
+        
+        ResultSet rs = conexion.RealizarQuery(query);
+        
+        try {
+            while(rs.next()){
+                Revista revista = new Revista();
+                revista.id_item = rs.getLong("id_item");
+                revista.descripcion = rs.getString("descripcion");
+                revista.id_categoria = rs.getLong("id_categoria");
+                revista.id_estante = rs.getLong("id_estante");
+                revista.nombre = rs.getString("nombre");
+                revista.unidades_para_prestar = rs.getInt("unidades_para_prestar");
+                revista.edicion = rs.getString("edicion");
+                revista.lugar_publicacion = rs.getString("lugar_lanzamiento");
+                revista.fecha_publicacion = rs.getString("fecha_lanzamiento");                
+                revista.id_revista = rs.getLong("id_revista");                
+                revista.editorial = rs.getString("editorial");
+                revista.nombreCategoria = rs.getString("categoria");
+                revistas.add(revista);                       
+            }
+        } catch (SQLException e){
+            System.out.println("Error: "  + e.getMessage());
         }
+        
+        //En este punto ya hay libros, toca filtrarlos
+        if(!nombre.isEmpty()){
+            revistas = revistas.stream().filter(p -> p.nombre.toLowerCase().contains(nombre.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+        
+        if(idCategoria != null && idCategoria != 0){          
+            revistas = revistas.stream().filter(p -> p.id_categoria == idCategoria)
+                    .collect(Collectors.toList());
+        }        
         
         return revistas;
         
