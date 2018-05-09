@@ -151,7 +151,7 @@
                               </div>                              
                               <div class="form-group">
                                   <label for="edicion" class="bmd-label-floating" >Edicion</label>
-                                  <h:inputText id="edicion" value="#{crudRevistasBean.revistaEdit}" styleClass="form-control"></h:inputText>                      
+                                  <h:inputText id="edicion" value="#{crudRevistasBean.revistaEdit.edicion}" styleClass="form-control"></h:inputText>                      
                               </div>
                               <div class="form-group">
                                   <label for="editorial" class="bmd-label-floating" >Editorial</label>
@@ -171,7 +171,7 @@
                               <h:inputHidden id="codigoRevista" value="#{crudRevistasBean.revistaEdit.id_revista}"></h:inputHidden>
                           </div>
                           <div class="modal-footer">                
-                              <h:commandButton value="Guardar" action="#{crudRevistasBean.agregarEditarRevista()}" styleClass="btn btn-success"/> &#160;
+                              <h:commandButton value="Guardar" action="#{crudRevistasBean.agregarEditarRevista}" styleClass="btn btn-success"/> &#160;
                               <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                           </div>                          
                       </h:form>
@@ -244,18 +244,15 @@
                    //Limpiar todos los campos
                    $("#frmModalEdit\\:nombreRevista").val('');
                    $('#frmModalEdit\\:categoriaRevista').val('');                   
-                   $('#frmModalEdit\\:estanteLibro').val('');
+                   $('#frmModalEdit\\:estanteRevista').val('');
                    $('.selectpicker').selectpicker('refresh');
                    
                    $('#frmModalEdit\\:descripcionEstante').val('');
                    $('#frmModalEdit\\:unidadesPrestar').val(0);
                    $('#frmModalEdit\\:nota').val('');
                    $('#frmModalEdit\\:edicion').val('');
-                   $('#frmModalEdit\\:autores').val('');
                    $('#frmModalEdit\\:lugarPublicacion').val('');
-                   $('#frmModalEdit\\:Isbn').val('');
                    $('#frmModalEdit\\:fechaPublicacion').val('');
-                   $('#frmModalEdit\\:autores').val('');
                    $('#frmModalEdit\\:codigoItem').val(0);
                    $('#frmModalEdit\\:codigoRevista').val(0);
                    //Levantar el modal
