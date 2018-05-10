@@ -91,7 +91,7 @@ and open the template in the editor.
                                 </ul>
                             </div>
                         </li>
-                        <li class="nav-item active" id="padreCatalogosBar">
+                        <li class="nav-item" id="padreCatalogosBar">
                             <a class="nav-link" data-toggle="collapse" href="#catalogosBar">
                                 <i class="material-icons">apps</i>
                                 <p> Catalogos
@@ -114,7 +114,26 @@ and open the template in the editor.
                                             </a>
                                         </li> 
                                     </h:panelGroup>
-
+                                </ul>
+                            </div>
+                        </li>                       
+                        <li class="nav-item" id="padreReporteBar">
+                            <a class="nav-link" data-toggle="collapse" href="#reportesBar">
+                                <i class="material-icons">list</i>
+                                <p> Reportes
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="reportesBar">
+                                <ul class="nav">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/reporte.xhtml">
+                                                <span class="sidebar-mini"> MP </span>
+                                                <span class="sidebar-normal"> Más prestados </span>
+                                            </a>
+                                        </li>
+                                    </h:panelGroup>
                                 </ul>
                             </div>
                         </li>                       
@@ -195,19 +214,7 @@ and open the template in the editor.
                                             </a>
                                         </li> 
                                     </h:panelGroup>
-
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="./faces/libros.xhtml">
-                                            <span class="sidebar-mini"> L </span>
-                                            <span class="sidebar-normal"> Libros </span>
-                                        </a> 
-                                        <a class="nav-link" href="./faces/tesis.xhtml">
-                                            <span class="sidebar-mini"> T </span>
-                                            <span class="sidebar-normal"> Tesis </span>
-                                        </a> 
-                                    </li>
-                                </ul>
-                                   
+                                </ul>                                   
                             </div>
                         </li>
                     </ul>
@@ -345,6 +352,10 @@ and open the template in the editor.
             
             if($("#catalogosBar &gt; ul").children().length &lt;= 0){
                 $("#padreCatalogosBar").remove();
+            }
+            
+            if($("#reportesBar &gt; ul").children().length &lt;= 0){
+                $("#padreReporteBar").remove();
             }
             
             if($("#itemsBar &gt; ul").children().length &lt;= 0){

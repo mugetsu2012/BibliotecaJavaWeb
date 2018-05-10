@@ -1,0 +1,134 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:composition template="/WEB-INF/facelets/templates/layout.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Reportes" />
+        </ui:define>
+        <ui:define name="content">
+            <div class="container-fluid">                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">assignment</i>
+                                </div>
+                                <h4 class="card-title">Más prestados</h4>
+
+                            </div>
+                            <div class="card-body">                                
+                                <div class="table-responsive">
+                                    <h:panelGroup id="tablaDatos">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>                                                
+                                                    <th>Nombre</th>
+                                                    <th>Descripcion</th>
+                                                    <th>#Préstamos</th>                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{reportesBean.masPrestados}" var="item">
+                                                    <tr>
+                                                        <td>#{item.nombre}</td>
+                                                        <td>#{item.descripcion}</td>
+                                                        <td>#{item.cantidadPrestamos}</td>                                                        
+                                                    </tr>
+                                                </ui:repeat>
+                                            </tbody>
+                                        </table>    
+                                    </h:panelGroup>                                                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+            </div>
+        </ui:define>     
+        <ui:define name="scripts">
+            <script>
+
+                //metodo de busqueda, para mostrar un loading
+                function onEventFunction(data) {
+                    var status = data.status; // Can be "begin", "complete" or "success".
+
+                    switch (status) {
+                        case "begin": // Before the ajax request is sent.
+
+                            swal({});
+                            swal.showLoading();
+
+                            break;
+
+                        case "complete": // After the ajax response is arrived.
+                            console.log("Ajax complete");
+                            break;
+
+                        case "success": // After update of HTML DOM based on ajax response..
+                            swal.close();
+                            break;
+                    }
+                }
+                //Evento para cuando se hace click en el boton de Editar
+                function onClickEdit(data) {
+                    var status = data.status; // Can be "begin", "complete" or "success".
+
+                    switch (status) {
+                        case "begin": // Before the ajax request is sent.
+
+                            swal({});
+                            swal.showLoading();
+
+                            break;
+
+                        case "success": // After update of HTML DOM based on ajax response..
+                            swal.close();
+
+                            //Activate bootstrap-select
+                            if ($(".selectpicker").length != 0) {
+                                $(".selectpicker").selectpicker();
+                            }
+
+                            //Levantar el modal
+                            $("#myModal").modal('show');
+
+                            break;
+                    }
+                }
+                $(document).ready(function () {
+
+                    //init DateTimePickers
+                    md.initFormExtendedDatetimepickers();
+
+                    $('#btnNuevoLibro').on('click', function (e) {
+                        e.preventDefault();
+                        //Limpiar todos los campos
+                        $("#frmModalEdit\\:nombreLibro").val('');
+                        $('#frmModalEdit\\:categoriaLibro').val('');
+                        $('#frmModalEdit\\:estanteLibro').val('');
+                        $('.selectpicker').selectpicker('refresh');
+
+                        $('#frmModalEdit\\:descripcionEstante').val('');
+                        $('#frmModalEdit\\:unidadesPrestar').val(0);
+                        $('#frmModalEdit\\:nota').val('');
+                        $('#frmModalEdit\\:edicion').val('');
+                        $('#frmModalEdit\\:autores').val('');
+                        $('#frmModalEdit\\:lugarPublicacion').val('');
+                        $('#frmModalEdit\\:Isbn').val('');
+                        $('#frmModalEdit\\:fechaPublicacion').val('');
+                        $('#frmModalEdit\\:autores').val('');
+                        $('#frmModalEdit\\:codigoItem').val(0);
+                        $('#frmModalEdit\\:codigoLibro').val(0);
+                        //Levantar el modal
+                        $("#myModal").modal('show');
+                    });
+                });
+            </script>
+        </ui:define>
+    </ui:composition>   
+
+
+</html>
+
