@@ -11,10 +11,17 @@ package sv.edu.udb.Data.modelos;
  */
 public class Cd extends Item {
 
+    /**
+     * @param id_cd the id_cd to set
+     */
+    public void setId_cd(long id_cd) {
+        this.id_cd = id_cd;
+    }
+
     
-    public long id_cd;
-    public String capacidad;
-    public String nota;
+    private long id_cd;
+    private String capacidad;
+    private String nota;
     
     /**
      * @return the capacidad

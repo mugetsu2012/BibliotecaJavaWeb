@@ -62,7 +62,7 @@ public class ItemsService extends ServiceBase {
         long codigoItem = insertarItem(cd);
         
         String query = "insert into cd(id_item,capacidad,nota)\n" +
-            "values("+codigoItem+",'"+cd.capacidad+"', '"+cd.nota+"')";
+            "values("+codigoItem+",'"+cd.getCapacidad()+"', '"+cd.getNota()+"')";
         
         long codigoCd = conexion.realizarInsert(query);
         
@@ -73,8 +73,8 @@ public class ItemsService extends ServiceBase {
         editarItem(cd);
         
         String querySql = "update cd\n" +
-            "set capacidad = '"+cd.capacidad+"', nota='"+cd.nota+"' \n" +
-            "where id_cd = "+cd.id_cd+"";
+            "set capacidad = '"+cd.getCapacidad()+"', nota='"+cd.getNota()+"' \n" +
+            "where id_cd = "+cd.getId_cd()+"";
         
         conexion.ejecutarQuery(querySql);
     }
@@ -457,9 +457,9 @@ public class ItemsService extends ServiceBase {
                 cd.id_estante = rs.getLong("id_estante");
                 cd.nombre = rs.getString("nombre");
                 cd.unidades_para_prestar = rs.getInt("unidades_para_prestar");
-                cd.nota = rs.getString("nota");
-                cd.capacidad = rs.getString("capacidad");                
-                cd.id_cd = rs.getLong("id_cd");                
+                cd.setNota(rs.getString("nota"));
+                cd.setCapacidad(rs.getString("capacidad"));                
+                cd.setId_cd(rs.getLong("id_cd"));                
                 cd.nombreCategoria = rs.getString("categoria");
                 cds.add(cd);                       
             }
@@ -491,9 +491,9 @@ public class ItemsService extends ServiceBase {
                 cd.id_estante = rs.getLong("id_estante");
                 cd.nombre = rs.getString("nombre");
                 cd.unidades_para_prestar = rs.getInt("unidades_para_prestar");
-                cd.nota = rs.getString("nota");
-                cd.capacidad = rs.getString("capacidad");                
-                cd.id_cd = rs.getLong("id_cd");                
+                cd.setNota(rs.getString("nota"));
+                cd.setCapacidad(rs.getString("capacidad"));                
+                cd.setId_cd(rs.getLong("id_cd"));                
                 cd.nombreCategoria = rs.getString("categoria");
                         
             }

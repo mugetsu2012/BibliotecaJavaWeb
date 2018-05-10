@@ -43,6 +43,7 @@ public class CrudCdBean implements Serializable{
         this.cds = itemsServices.getListadoCds();
         this.categorias = catalogosService.getCategorias(null);
         CdEdit = new Cd();
+        construirOpcionesCategoria();
     }
     
     public List<Cd> getCd(){
