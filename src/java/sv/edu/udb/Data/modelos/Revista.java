@@ -18,6 +18,26 @@ public class Revista extends Item {
     
     public long getId_revista(){
         return id_revista;
+    }        
+
+    public void setId_revista(long id_revista) {
+        this.id_revista = id_revista;
+    }
+
+    public void setEdicion(String edicion) {
+        this.edicion = edicion;
+    }
+
+    public void setEditorial(String editorial) {
+        this.editorial = editorial;
+    }
+
+    public void setLugar_publicacion(String lugar_publicacion) {
+        this.lugar_publicacion = lugar_publicacion;
+    }
+
+    public void setFecha_publicacion(String fecha_publicacion) {
+        this.fecha_publicacion = fecha_publicacion;
     }
     
     public String getEdicion(){
@@ -33,5 +53,7 @@ public class Revista extends Item {
     }
     public String getFecha_publicacion(){
         return fecha_publicacion;
-    }
+    }    
+    
+    
 }

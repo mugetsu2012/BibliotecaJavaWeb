@@ -20,10 +20,10 @@ import sv.edu.udb.Services.*;
  *
  * @author Douglas
  */
-@Named(value = "crudLibrosBean")
+@Named(value = "crudRevistasBean")
 @ManagedBean
 @RequestScoped
-public class CrudLibrosBean implements Serializable {
+public class CrudRevistasBean implements Serializable {
 
     /**
      * @return the idCategoria
@@ -52,40 +52,29 @@ public class CrudLibrosBean implements Serializable {
     public void setNombreBuscar(String nombreBuscar) {
         this.nombreBuscar = nombreBuscar;
     }
-
-    /**
-     * @return the autoresBuscar
-     */
-    public String getAutoresBuscar() {
-        return autoresBuscar;
-    }
-
-    /**
-     * @param autoresBuscar the autoresBuscar to set
-     */
-    public void setAutoresBuscar(String autoresBuscar) {
-        this.autoresBuscar = autoresBuscar;
-    }
+    
     
     private final ItemsService itemsService;
     private final CatalogosService catalogosService;
     private List<Libro> libros;
+    private List<Revista> revistas;
     private List<Categoria> categorias;
     private List<Estante> estantes;
     private Libro libroEdit;
+    private Revista revistaEdit;
     private Map<String, Object> opcionesCategoria;
     private Map<String, Object> opcionesEstante;
     
     private int idCategoria;
     private String nombreBuscar;
-    private String autoresBuscar;
+    
     
     
 
     /**
      * Creates a new instance of CrudLibrosBean
      */
-    public CrudLibrosBean() {
+    public CrudRevistasBean() {
          this.itemsService = new ItemsService();
          this.catalogosService = new CatalogosService();
     }
@@ -93,9 +82,11 @@ public class CrudLibrosBean implements Serializable {
     @PostConstruct
     public void init(){
         this.libros = itemsService.getListadoLibros("", null, "");
+        this.revistas = itemsService.getListadoRevistas();
         this.categorias = catalogosService.getCategorias("");
         this.estantes = catalogosService.getEstantes(null);
         libroEdit = new Libro();
+        revistaEdit = new Revista();
         construirOpcionesCategoria();
         construirOpcionesEstante();
     }
@@ -104,8 +95,16 @@ public class CrudLibrosBean implements Serializable {
         return libros;
     }
     
+    public List<Revista> getRevistas(){
+        return revistas;
+    }
+    
     public Libro getLibroEdit(){
         return libroEdit;
+    }
+    
+    public Revista getRevistaEdit(){
+        return revistaEdit;
     }
     
     public void agregarEditarLibro(){
@@ -120,13 +119,34 @@ public class CrudLibrosBean implements Serializable {
         this.libros = itemsService.getListadoLibros("",null,"");
     }
     
+    public void agregarEditarRevista(){
+        Revista revista = revistaEdit;
+        if(revistaEdit.id_revista==0){
+            itemsService.insertarRevista(revista);
+        }
+        else{
+            itemsService.editarRevista(revista);
+        }
+        
+        this.revistas = itemsService.getListadoRevistas();
+    }
+    
     public void buscarLibros(String nombre, String autores, int categoria){
         this.libros = itemsService.getListadoLibros(nombre, categoria, autores);
         this.libroEdit = null;
     }
     
+    public void buscarRevistas(String nombre, int categoria){
+        this.revistas=itemsService.getListadoRevistas(nombre, idCategoria);
+        this.revistaEdit=null;
+    }
+    
     public void marcarEditarLibro(Libro libro){
         this.libroEdit = libro;        
+    }
+    
+    public void marcarEditarRevista(Revista revista){
+        this.revistaEdit=revista;
     }
     
     public void construirOpcionesCategoria(){

@@ -6,28 +6,30 @@
 package sv.edu.udb.Beans;
 
 import javax.inject.Named;
-import java.io.Serializable;
+import javax.enterprise.context.Dependent;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.*;
 import sv.edu.udb.Data.modelos.*;
 import sv.edu.udb.Services.*;
+import javax.annotation.PostConstruct;
+import java.util.stream.Collectors;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
- * @author Douglas
+ * @author DavidMguel
  */
-@Named(value = "crudLibrosBean")
+@Named(value = "crudTesisBean")
 @ManagedBean
 @RequestScoped
-public class CrudLibrosBean implements Serializable {
 
-    /**
-     * @return the idCategoria
-     */
+
+public class CrudTesisBean implements Serializable {
+    
     public int getIdCategoria() {
         return idCategoria;
     }
@@ -67,66 +69,65 @@ public class CrudLibrosBean implements Serializable {
         this.autoresBuscar = autoresBuscar;
     }
     
-    private final ItemsService itemsService;
-    private final CatalogosService catalogosService;
-    private List<Libro> libros;
-    private List<Categoria> categorias;
-    private List<Estante> estantes;
-    private Libro libroEdit;
-    private Map<String, Object> opcionesCategoria;
-    private Map<String, Object> opcionesEstante;
     
+    
+     
     private int idCategoria;
     private String nombreBuscar;
     private String autoresBuscar;
+    private final ItemsService itemsService;
+    private final CatalogosService catalogosService;
+    private List<Tesis> tesis;
+    private List<Categoria> categorias;
+    private List<Estante> estantes;
+    private Tesis tesisEdit;
+    private Map<String, Object> opcionesCategoria;
+    private Map<String, Object> opcionesEstante;
     
     
-
-    /**
-     * Creates a new instance of CrudLibrosBean
-     */
-    public CrudLibrosBean() {
+    
+    public CrudTesisBean() {
          this.itemsService = new ItemsService();
          this.catalogosService = new CatalogosService();
     }
     
     @PostConstruct
     public void init(){
-        this.libros = itemsService.getListadoLibros("", null, "");
+        this.tesis = itemsService.getListadoTesis();
         this.categorias = catalogosService.getCategorias("");
         this.estantes = catalogosService.getEstantes(null);
-        libroEdit = new Libro();
+         tesisEdit = new Tesis();
         construirOpcionesCategoria();
         construirOpcionesEstante();
     }
     
-    public List<Libro> getLibros(){
-        return libros;
+    public List<Tesis> getTesis(){
+        return tesis;
     }
     
-    public Libro getLibroEdit(){
-        return libroEdit;
+    public Tesis getTesisEdit(){
+        return  tesisEdit;
     }
     
-    public void agregarEditarLibro(){
-        Libro libro = libroEdit;
-        if(libroEdit.id_libro == 0){
-            itemsService.insertarLibro(libro);
+    public void agregarEditarTesis(){
+        Tesis Tesis = tesisEdit;
+        if(tesisEdit.id_tesis == 0){
+            itemsService.insertarTesis(Tesis);
         }
         else {
-            itemsService.editarLibro(libro);
+            itemsService.editarTesis(Tesis);
         }
         
-        this.libros = itemsService.getListadoLibros("",null,"");
+        this.tesis = itemsService.getListadoTesis();
     }
     
-    public void buscarLibros(String nombre, String autores, int categoria){
-        this.libros = itemsService.getListadoLibros(nombre, categoria, autores);
-        this.libroEdit = null;
+    public void buscartesis(String nombre, String autores, int categoria){
+        this.tesis = itemsService.getListadoTesis();
+        this.tesisEdit = null;
     }
     
-    public void marcarEditarLibro(Libro libro){
-        this.libroEdit = libro;        
+    public void marcarEditarTesis(Tesis tesis){
+        this.tesisEdit = tesis;
     }
     
     public void construirOpcionesCategoria(){
