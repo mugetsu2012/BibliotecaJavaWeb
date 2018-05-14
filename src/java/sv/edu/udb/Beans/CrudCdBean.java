@@ -25,73 +25,131 @@ import javax.faces.convert.LongConverter;
 @ManagedBean
 @SessionScoped
 public class CrudCdBean implements Serializable{
-    private final ItemsService itemsServices;
+    /**
+     * @return the idCategoria
+     */
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    /**
+     * @param idCategoria the idCategoria to set
+     */
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    /**
+     * @return the nombreBuscar
+     */
+    public String getNombreBuscar() {
+        return nombreBuscar;
+    }
+
+    /**
+     * @param nombreBuscar the nombreBuscar to set
+     */
+    public void setNombreBuscar(String nombreBuscar) {
+        this.nombreBuscar = nombreBuscar;
+    }
+
+    /**
+     * @return the autoresBuscar
+     */
+    public String getAutoresBuscar() {
+        return autoresBuscar;
+    }
+
+    /**
+     * @param autoresBuscar the autoresBuscar to set
+     */
+    public void setAutoresBuscar(String autoresBuscar) {
+        this.autoresBuscar = autoresBuscar;
+    }
+    
+    private final ItemsService itemsService;
     private final CatalogosService catalogosService;
     private List<Cd> cds;
-    private Cd CdEdit;
-    private String input;
     private List<Categoria> categorias;
+    private List<Estante> estantes;
+    private Cd cdEdit;
     private Map<String, Object> opcionesCategoria;
+    private Map<String, Object> opcionesEstante;
     
-    public CrudCdBean(){
-        this.itemsServices = new ItemsService();
-        this.catalogosService = new CatalogosService();
+    private int idCategoria;
+    private String nombreBuscar;
+    private String autoresBuscar;
+    
+    
+
+    /**
+     * Creates a new instance of CrudLibrosBean
+     */
+    public CrudCdBean() {
+         this.itemsService = new ItemsService();
+         this.catalogosService = new CatalogosService();
     }
     
     @PostConstruct
     public void init(){
-        this.cds = itemsServices.getListadoCds();
-        this.categorias = catalogosService.getCategorias(null);
-        CdEdit = new Cd();
+        this.cds = itemsService.getListadoCds();
+        this.categorias = catalogosService.getCategorias("");
+        this.estantes = catalogosService.getEstantes(null);
+        cdEdit = new Cd();
         construirOpcionesCategoria();
+        construirOpcionesEstante();
     }
     
-    public List<Cd> getCd(){
+    public List<Cd> getCds(){
         return cds;
     }
     
     public Cd getCdEdit(){
-        return CdEdit;
-    }
-    public void BuscarTexto(String texto){
-        //this.cds = itemsServices.getCd(Long.parseLong(texto));
-        this.CdEdit = null;
-    }
-    
-    public void submitBusqueda(){
-        BuscarTexto(input);
+        return cdEdit;
     }
     
     public void agregarEditarCd(){
-        Cd cd_ = CdEdit;
-        if(CdEdit.getId_cd() == 0){
-            itemsServices.insertarCd(cd_);
+        Cd cd = cdEdit;        
+        if(cdEdit.id_cd == 0){
+            itemsService.insertarCd(cd);
         }
-        else{
-            itemsServices.editarCd(cd_);
+        else {
+            itemsService.editarCd(cd);
         }
-        this.cds = itemsServices.getListadoCds();
+        
+        this.cds = itemsService.getListadoCds();
     }
     
-    public void marcarEditarCd(Cd cd_){
-        this.CdEdit = cd_;
+    public void buscarCds(String nombre, int categoria){
+        this.cds = itemsService.getListadoCds(nombre,categoria);
+        this.cdEdit = null;
     }
-    public String getInput(){
-        return input;
-    }
-    public void setInput(String input){
-        this.input = input;
+    
+    public void marcarEditarCd(Cd cd){
+        this.cdEdit = cd;        
     }
     
     public void construirOpcionesCategoria(){
         opcionesCategoria = new LinkedHashMap<String,Object>();
         for (Iterator<Categoria> i = categorias.iterator(); i.hasNext();) {
             Categoria item = i.next();           
-            opcionesCategoria.put(item.getNombre(), item.getCodigo());
+            opcionesCategoria.put(item.nombre, item.codigo);
+        }       
+    }
+    
+    public void construirOpcionesEstante(){
+        opcionesEstante = new LinkedHashMap<String,Object>();
+        for (Iterator<Estante> i = estantes.iterator(); i.hasNext();) {
+            Estante item = i.next();           
+            opcionesEstante.put(item.nombre, item.codigo);
         }       
     }
     
     public Map<String, Object> getOpcionesCategoria(){
         return opcionesCategoria;
+    }
+    
+    public Map<String, Object> getOpcionesEstante(){
+        return opcionesEstante;
     }
 }

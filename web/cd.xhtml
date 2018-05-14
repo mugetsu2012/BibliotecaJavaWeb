@@ -18,18 +18,33 @@
                                 <h4 class="card-title">Filtros</h4>
                             </div>
                             <h:form>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="palabraBuscar" class="bmd-label-floating">Palabra</label>
-                                        <h:inputText id="palabraBuscar" value="#{crudCdBean.input}" styleClass="form-control"></h:inputText>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <h:commandButton styleClass="btn btn-fill btn-rose" value="Buscar" id="btnBuscar"
-                                                     action="#{crudCdBean.BuscarTexto(crudCdBean.input)}">
-                                        <f:ajax execute="palabraBuscar" render="tablaDatos" onevent="onEventFunction"></f:ajax>
-                                    </h:commandButton>
-                                </div>
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="bsqNombreCD" class="bmd-label-floating">Nombre</label>                                                
+                                                <h:inputText id="bsqNombreLibro" value="#{crudCdBean.nombreBuscar}" styleClass="form-control"></h:inputText>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">                                            
+                                            <h:selectOneMenu id="bsqCategoria" styleClass="selectpicker" title="Categoria" value="#{crudCdBean.idCategoria}">
+                                                <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                                                <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>
+                                                <f:selectItem itemValue="0" itemLabel="Todas las categorias" >                                                    
+                                                    <f:passThroughAttribute name="selected" value="selected"></f:passThroughAttribute>
+                                                </f:selectItem>
+                                                <f:selectItems value="#{crudCdBean.opcionesCategoria}" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>                   
+                            </div>
+                            <div class="card-footer ">                                
+
+                                <h:commandButton styleClass="btn btn-fill btn-rose" value="Buscar" id="btnBuscar"
+                                                 action="#{crudCdBean.buscarCds(crudCdBean.nombreBuscar, crudCdBean.idCategoria)}">
+                                    <f:ajax execute="bsqNombreCd bsqCategoria" render="tablaDatos" onevent="onEventFunction"></f:ajax>
+                                </h:commandButton>
+                            </div>
                             </h:form>
                         </div>                      
                     </div>
@@ -56,20 +71,20 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Id Item</th>
+                                                    <th>Código</th>
+                                                    <th>Nombre</th>                                                    
                                                     <th>Capacidad</th>
                                                     <th>Nota</th>
                                                     <th>Descripcion</th>
-                                                    <th>Nombre Categoria</th>
+                                                    <th>Categoria</th>
                                                     <th class="text-right">Editar</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <ui:repeat value="#{crudCdBean.cd}" var="cd">
+                                                <ui:repeat value="#{crudCdBean.cds}" var="cd">
                                                     <tr>
-                                                        <td>#{cd.nombre}</td>
                                                         <td>#{cd.id_item}</td>
+                                                        <td>#{cd.nombre}</td>
                                                         <td>#{cd.capacidad}</td>
                                                         <td>#{cd.nota}</td>
                                                         <td>#{cd.descripcion}</td>
@@ -105,37 +120,51 @@
                             <h4 class="modal-title">Agregar/Editar Cds</h4>
                         </div>
                         <h:form id="frmModalEdit">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="nombre" class="bmd-label-floating">Nombre</label>
-                                    <h:inputText id="nombre" value="#{crudCdBean.cdEdit.nombre}" styleClass="form-control"></h:inputText>
-                                </div>
-                                <div class="form-group">
-                                    <label for="capacidadCd" class="bmd-label-floating">Capacidad CD</label>
-                                    <h:inputText id="capacidadCd" value="#{crudCdBean.cdEdit.capacidad}" styleClass="form-control"></h:inputText>
-                                </div>
-                                <div class="form-group">
-                                    <label for="notaCd" class="bmd-label-floating">Nota CD</label>
-                                    <h:inputText id="notaCd" value="#{crudCdBean.cdEdit.nota}" styleClass="form-control"></h:inputText>
-                                </div>
-                                <div class="form-group">
-                                    <label for="descripcionCd" class="bmd-label-floating">Descripcion</label>
-                                    <h:inputText id="descripcionCd" value="#{crudCdBean.cdEdit.descripcion}" styleClass="form-control"></h:inputText>
-                                </div>
-                                <div class="form-group">
-                                  <h:selectOneMenu id="nombreCategoria" styleClass="selectpicker" title="Categoria" value="#{crudLibrosBean.libroEdit.id_categoria}">
+                          <div class="modal-body">
+                              <div class="form-group">
+                                  <label for="nombreCd" class="bmd-label-floating" >Nombre CD</label>
+                                  <h:inputText id="nombreCd" value="#{crudCdBean.cdEdit.nombre}" styleClass="form-control"></h:inputText>                      
+                              </div>
+                              <div class="form-group">
+                                  <h:selectOneMenu id="categoriaCd" styleClass="selectpicker" title="Categoria" value="#{crudCdBean.cdEdit.id_categoria}">
                                       <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
-                                      <f:passThroughAttribute name="data-size" value="#{crudLibrosBean.opcionesCategoria.size}"></f:passThroughAttribute>                                      
+                                      <f:passThroughAttribute name="data-size" value="#{crudCdBean.opcionesCategoria.size}"></f:passThroughAttribute>                                      
                                       <f:selectItems value="#{crudCdBean.opcionesCategoria}" />
                                   </h:selectOneMenu>
                               </div>
-                                <h:inputHidden id="codigoCd" value="#{crudCdBean.cdEdit.id_cd}"></h:inputHidden>
-                            </div>
-                            <div class="modal_footer">
-                                <h:commandButton value="Agregar" action="#{crudCdBean.agregarEditarCd}" styleClass="btn btn-success"/>&nbsp;
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                            </div>
-                        </h:form>
+                              <div class="form-group">
+                                  <h:selectOneMenu id="estanteCd" styleClass="selectpicker" title="Estante" value="#{crudCdBean.cdEdit.id_estante}">
+                                      <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                                      <f:passThroughAttribute name="data-size" value="7"></f:passThroughAttribute>                                      
+                                      <f:selectItems value="#{crudCdBean.opcionesEstante}" />
+                                  </h:selectOneMenu>
+                              </div>
+                              <div class="form-group">
+                                  <label for="descripcion" class="bmd-label-floating" >Descripcion</label>
+                                  <h:inputTextarea id="descripcionCd" value="#{crudCdBean.cdEdit.descripcion}" styleClass="form-control" rows="4" cols="50"></h:inputTextarea>                                           
+                              </div>
+                              <div class="form-group">
+                                  <label for="unidadesPrestar" class="bmd-label-floating" >Unidadades prestar</label>
+                                  <h:inputText id="unidadesPrestar" value="#{crudCdBean.cdEdit.unidades_para_prestar}" styleClass="form-control">
+                                      <f:passThroughAttribute name="type" value="number"></f:passThroughAttribute>
+                                  </h:inputText>                      
+                              </div>
+                              <div class="form-group">
+                                  <label for="capacidad" class="bmd-label-floating" >Capacidad</label>
+                                  <h:inputText id="capacidad" value="#{crudCdBean.cdEdit.capacidad}" styleClass="form-control"></h:inputText>                      
+                              </div>                                                            
+                              <div class="form-group">
+                                  <label for="nota" class="bmd-label-floating" >Nota</label>
+                                  <h:inputTextarea id="nota" value="#{crudCdBean.cdEdit.nota}" styleClass="form-control" rows="4" cols="50"></h:inputTextarea>                                           
+                              </div>                              
+                              <h:inputHidden id="codigoItem" value="#{crudCdBean.cdEdit.id_item}"></h:inputHidden>
+                              <h:inputHidden id="codigoCd" value="#{crudCdBean.cdEdit.id_cd}"></h:inputHidden>
+                          </div>
+                          <div class="modal-footer">                
+                              <h:commandButton value="Guardar" action="#{crudCdBean.agregarEditarCd}" styleClass="btn btn-success"/> &#160;
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                          </div>                          
+                      </h:form>
                     </div>
                 </div>
             </div>
@@ -189,11 +218,13 @@
                    
                    //Limpiar todos los campos
                    $('#frmModalEdit\\:nombre').val('');
-                   $('#frmModalEdit\\:id_item').val('');
-                   $('#frmModalEdit\\:capacidadCd').val('');
-                   $('#frmModalEdit\\:notaCd').val('');
-                   $('#frmModalEdit\\:descripcionCd').val('');
-                   $('#frmModalEdit\\:nombreCategoria').val('');
+                   $('#frmModalEdit\\:capacidad').val('');
+                   $('#frmModalEdit\\:nota').val('');
+                   $('#frmModalEdit\\:unidadesPrestar').val(0);
+                   $('#frmModalEdit\\:descripcion').val('');
+                   $('#frmModalEdit\\:categoriaCd').val('');
+                   $('#frmModalEdit\\:estanteCd').val('');
+                   $('#frmModalEdit\\:codigoItem').val(0);
                    $('#frmModalEdit\\:codigoCd').val(0);
                    //Levantar el modal
                    $("#myModal").modal('show');

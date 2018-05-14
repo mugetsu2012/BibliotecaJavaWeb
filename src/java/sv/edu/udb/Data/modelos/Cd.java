@@ -19,7 +19,7 @@ public class Cd extends Item {
     }
 
     
-    private long id_cd;
+    public long id_cd;
     private String capacidad;
     private String nota;
     

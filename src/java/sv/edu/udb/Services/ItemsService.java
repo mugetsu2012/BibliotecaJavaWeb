@@ -471,6 +471,51 @@ public class ItemsService extends ServiceBase {
         
     }
     
+    public List<Cd> getListadoCds(String nombre, Integer idCategoria){
+        
+        List<Cd> cds = new ArrayList<Cd>();
+        
+        String query = "select cd.id_cd, i.id_item,cd.capacidad,cd.nota, i.id_categoria, i.id_estante, i.nombre, i.descripcion, i.unidades_para_prestar, c.categoria\n" +
+            "from cd as cd\n" +
+            "inner join item as i on i.id_item = cd.id_item\n" +
+            "inner join categoria as c on c.id_categoria = i.id_categoria";
+        
+        ResultSet rs = conexion.RealizarQuery(query);
+        
+        try {
+            while(rs.next()){
+                Cd cd = new Cd();
+                cd.id_item = rs.getLong("id_item");
+                cd.descripcion = rs.getString("descripcion");
+                cd.id_categoria = rs.getLong("id_categoria");
+                cd.id_estante = rs.getLong("id_estante");
+                cd.nombre = rs.getString("nombre");
+                cd.unidades_para_prestar = rs.getInt("unidades_para_prestar");
+                cd.setNota(rs.getString("nota"));
+                cd.setCapacidad(rs.getString("capacidad"));                
+                cd.setId_cd(rs.getLong("id_cd"));                
+                cd.nombreCategoria = rs.getString("categoria");
+                cds.add(cd);                       
+            }
+        } catch (SQLException e){
+            System.out.println("Error: "  + e.getMessage());
+        }
+        
+        //En este punto ya hay libros, toca filtrarlos
+        if(!nombre.isEmpty()){
+            cds = cds.stream().filter(p -> p.nombre.toLowerCase().contains(nombre.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+        
+        if(idCategoria != null && idCategoria != 0){          
+            cds = cds.stream().filter(p -> p.id_categoria == idCategoria)
+                    .collect(Collectors.toList());
+        }        
+        
+        return cds;
+        
+    }
+    
     public Cd getCd(long codigoCd){
         
         Cd cd = new Cd();
