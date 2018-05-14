@@ -93,7 +93,7 @@ public class CrudTesisBean implements Serializable {
     
     @PostConstruct
     public void init(){
-        this.tesis = itemsService.getListadoTesis();
+        this.tesis = itemsService.getListadoTesis("", null, "");
         this.categorias = catalogosService.getCategorias();
         this.estantes = catalogosService.getEstantes(null);
          tesisEdit = new Tesis();
@@ -118,11 +118,11 @@ public class CrudTesisBean implements Serializable {
             itemsService.editarTesis(Tesis);
         }
         
-        this.tesis = itemsService.getListadoTesis();
+        this.tesis = itemsService.getListadoTesis("", null, "");
     }
     
     public void buscartesis(String nombre, String autores, int categoria){
-        this.tesis = itemsService.getListadoTesis();
+        this.tesis = itemsService.getListadoTesis(nombre, categoria, autores);
         this.tesisEdit = null;
     }
     

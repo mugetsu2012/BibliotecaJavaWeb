@@ -251,7 +251,7 @@ public class ItemsService extends ServiceBase {
         return libro;
     }
     
-    public List<Tesis> getListadoTesis(){
+    public List<Tesis> getListadoTesis(String nombre, Integer idCategoria, String autores){
         List<Tesis> tesiss = new ArrayList<Tesis>();
         
         String query = "select t.id_tesis, i.id_item,t.fecha_publicacion,t.lugar_desarrollo, t.autores, i.id_categoria, i.id_estante, i.nombre, i.descripcion, i.unidades_para_prestar, c.categoria\n" +
@@ -279,6 +279,22 @@ public class ItemsService extends ServiceBase {
             }
         } catch (SQLException e){
             System.out.println("Error: "  + e.getMessage());
+        }
+        
+        //En este punto ya hay libros, toca filtrarlos
+        if(!nombre.isEmpty()){
+            tesiss = tesiss.stream().filter(p -> p.nombre.toLowerCase().contains(nombre.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+        
+        if(!autores.isEmpty()){
+            tesiss = tesiss.stream().filter(p -> p.autores.toLowerCase().contains(autores.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+        
+        if(idCategoria != null && idCategoria != 0){          
+            tesiss = tesiss.stream().filter(p -> p.id_categoria == idCategoria)
+                    .collect(Collectors.toList());
         }
         
         return tesiss;

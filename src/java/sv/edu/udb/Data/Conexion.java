@@ -23,7 +23,7 @@ public class Conexion {
     public Conexion() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotecajava?useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotecajava?useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "pass123");
             s = conexion.createStatement();
         } catch (ClassNotFoundException e1) {
             System.out.println("ERROR:No encuentro el driver de la BD:" + e1.getMessage());

@@ -47,7 +47,7 @@
                           <div class="card-footer ">                                
 
                              <h:commandButton styleClass="btn btn-fill btn-rose" value="Buscar" id="btnBuscar"
-                                               action="#{crudTesisBean.buscarTesis(crudTesisBean.nombreBuscar, crudTesisBean.autoresBuscar, crudTesisBean.idCategoria)}">
+                                              action="#{crudTesisBean.buscartesis(crudTesisBean.nombreBuscar, crudTesisBean.autoresBuscar, crudTesisBean.idCategoria)}">
                                   <f:ajax execute="bsqNombreTesis bsqAutorTesis bsqCategoria" render="tablaDatos" onevent="onEventFunction"></f:ajax>
                               </h:commandButton>
                           </div>
