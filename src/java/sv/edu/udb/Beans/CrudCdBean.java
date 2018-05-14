@@ -7,6 +7,8 @@ package sv.edu.udb.Beans;
 
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -14,98 +16,82 @@ import javax.faces.bean.*;
 import sv.edu.udb.Data.modelos.*;
 import sv.edu.udb.Services.*;
 import java.util.stream.Collectors;
+import javax.faces.convert.LongConverter;
 /**
  *
- * @author DavidMguel
+ * @author yuuta
  */
 @Named(value = "crudCdBean")
 @ManagedBean
 @SessionScoped
 public class CrudCdBean implements Serializable{
-
-  public int getIdCategoria() {
-        return idCategoria;
-    }
-
-    /**
-     * @param idCategoria the idCategoria to set
-     */
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
-    }
-
-    /**
-     * @return the nombreBuscar
-     */
-    public String getNombreBuscar() {
-        return nombreBuscar;
-    }
-
-    /**
-     * @param nombreBuscar the nombreBuscar to set
-     */
-    public void setNombreBuscar(String nombreBuscar) {
-        this.nombreBuscar = nombreBuscar;
-    }
-
-    /**
-     * @return the autoresBuscar
-     */
-    public String getAutoresBuscar() {
-        return autoresBuscar;
-    }
-
-    /**
-     * @param autoresBuscar the autoresBuscar to set
-     */
-    public void setAutoresBuscar(String autoresBuscar) {
-        this.autoresBuscar = autoresBuscar;
-    }
-    private int idCategoria;
-    private String nombreBuscar;
-    private String autoresBuscar;
-    private List<Cd> cd;
-    private List<Categoria> categorias;
-    private List<Estante> estantes;
-    private Cd cdEdit;
-    private Map<String, Object> opcionesCategoria;
-    private Map<String, Object> opcionesEstante;
-    private final ItemsService itemsService;
+    private final ItemsService itemsServices;
     private final CatalogosService catalogosService;
+    private List<Cd> cds;
+    private Cd CdEdit;
+    private String input;
+    private List<Categoria> categorias;
+    private Map<String, Object> opcionesCategoria;
     
-public CrudCdBean() {
-         this.itemsService = new ItemsService();
-         this.catalogosService = new CatalogosService();
+    public CrudCdBean(){
+        this.itemsServices = new ItemsService();
+        this.catalogosService = new CatalogosService();
     }
-
+    
     @PostConstruct
     public void init(){
-        this.cdEdit= itemsService.getCd(idCategoria)
-        this.categorias = catalogosService.getCategorias();
-        this.estantes = catalogosService.getEstantes(null);
-        cdEdit = new Cd();
+        this.cds = itemsServices.getListadoCds();
+        this.categorias = catalogosService.getCategorias(null);
+        CdEdit = new Cd();
         construirOpcionesCategoria();
-        construirOpcionesEstante();
     }
     
-    public List<Cd> getTesis(){
-        return cd;
+    public List<Cd> getCd(){
+        return cds;
     }
     
-    public Cd getTesisEdit(){
-        return  cdEdit;
+    public Cd getCdEdit(){
+        return CdEdit;
+    }
+    public void BuscarTexto(String texto){
+        //this.cds = itemsServices.getCd(Long.parseLong(texto));
+        this.CdEdit = null;
     }
     
-    public void agregarEditarTesis(){
-        Cd cd = cdEdit;
-        if(cdEdit.id_cd== 0){
-            itemsService.insertarCd(cd);
+    public void submitBusqueda(){
+        BuscarTexto(input);
+    }
+    
+    public void agregarEditarCd(){
+        Cd cd_ = CdEdit;
+        if(CdEdit.getId_cd() == 0){
+            itemsServices.insertarCd(cd_);
         }
-        else {
-            itemsService.editarCd(cd);
+        else{
+            itemsServices.editarCd(cd_);
         }
-        
-        this.cd = itemsService.getListadoCds();
+        this.cds = itemsServices.getListadoCds();
     }
     
+    public void marcarEditarCd(Cd cd_){
+        this.CdEdit = cd_;
+    }
+    public String getInput(){
+        return input;
+    }
+    public void setInput(String input){
+        this.input = input;
+    }
+    
+    public void construirOpcionesCategoria(){
+        opcionesCategoria = new LinkedHashMap<String,Object>();
+        for (Iterator<Categoria> i = categorias.iterator(); i.hasNext();) {
+            Categoria item = i.next();           
+            opcionesCategoria.put(item.getNombre(), item.getCodigo());
+        }       
+    }
+    
+    public Map<String, Object> getOpcionesCategoria(){
+        return opcionesCategoria;
+    }
 }

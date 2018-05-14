@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <ui:composition template="/WEB-INF/facelets/templates/layout.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Cd" />
+        </ui:define>
+        <ui:define name="content">
+            <div class="contact-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">search</i>
+                                </div>
+                                <h4 class="card-title">Filtros</h4>
+                            </div>
+                            <h:form>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="palabraBuscar" class="bmd-label-floating">Palabra</label>
+                                        <h:inputText id="palabraBuscar" value="#{crudCdBean.input}" styleClass="form-control"></h:inputText>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <h:commandButton styleClass="btn btn-fill btn-rose" value="Buscar" id="btnBuscar"
+                                                     action="#{crudCdBean.BuscarTexto(crudCdBean.input)}">
+                                        <f:ajax execute="palabraBuscar" render="tablaDatos" onevent="onEventFunction"></f:ajax>
+                                    </h:commandButton>
+                                </div>
+                            </h:form>
+                        </div>                      
+                    </div>
+                </div>
+            </div>
+            <div class="contact-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">assignment</i>
+                                </div>
+                                <h4 class="card-title">CD</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-left">
+                                    <button type="button" id="btnNuevoCd" class="btn btn-success btn-fill btn-wd">
+                                        Nuevo<div class="ripple-container"></div>
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <h:panelGroup id="tablaCD">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Id Item</th>
+                                                    <th>Capacidad</th>
+                                                    <th>Nota</th>
+                                                    <th>Descripcion</th>
+                                                    <th>Nombre Categoria</th>
+                                                    <th class="text-right">Editar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{crudCdBean.cd}" var="cd">
+                                                    <tr>
+                                                        <td>#{cd.nombre}</td>
+                                                        <td>#{cd.id_item}</td>
+                                                        <td>#{cd.capacidad}</td>
+                                                        <td>#{cd.nota}</td>
+                                                        <td>#{cd.descripcion}</td>
+                                                        <td>#{cd.nombreCategoria}</td>
+                                                        <td class="td-actions text-right">
+                                                            <h:form>
+                                                                <h:commandLink styleClass="btn btn-success" value="" action="#{crudCdBean.marcarEditarCd(cd)}">
+                                                                    <i class="material-icons">edit</i>
+                                                                    <f:ajax execute="@this" render="frmModalEdit" onevent="onClickEdit"></f:ajax>
+                                                                </h:commandLink>
+                                                            </h:form>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                </ui:repeat>
+                                            </tbody>
+                                        </table>
+                                    </h:panelGroup>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                <i class="material-icons">clear</i>
+                            </button>
+                            <h4 class="modal-title">Agregar/Editar Cds</h4>
+                        </div>
+                        <h:form id="frmModalEdit">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="nombre" class="bmd-label-floating">Nombre</label>
+                                    <h:inputText id="nombre" value="#{crudCdBean.cdEdit.nombre}" styleClass="form-control"></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <label for="capacidadCd" class="bmd-label-floating">Capacidad CD</label>
+                                    <h:inputText id="capacidadCd" value="#{crudCdBean.cdEdit.capacidad}" styleClass="form-control"></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notaCd" class="bmd-label-floating">Nota CD</label>
+                                    <h:inputText id="notaCd" value="#{crudCdBean.cdEdit.nota}" styleClass="form-control"></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcionCd" class="bmd-label-floating">Descripcion</label>
+                                    <h:inputText id="descripcionCd" value="#{crudCdBean.cdEdit.descripcion}" styleClass="form-control"></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                  <h:selectOneMenu id="nombreCategoria" styleClass="selectpicker" title="Categoria" value="#{crudLibrosBean.libroEdit.id_categoria}">
+                                      <f:passThroughAttribute name="data-style" value="btn btn-primary btn-round"></f:passThroughAttribute>
+                                      <f:passThroughAttribute name="data-size" value="#{crudLibrosBean.opcionesCategoria.size}"></f:passThroughAttribute>                                      
+                                      <f:selectItems value="#{crudCdBean.opcionesCategoria}" />
+                                  </h:selectOneMenu>
+                              </div>
+                                <h:inputHidden id="codigoCd" value="#{crudCdBean.cdEdit.id_cd}"></h:inputHidden>
+                            </div>
+                            <div class="modal_footer">
+                                <h:commandButton value="Agregar" action="#{crudCdBean.agregarEditarCd}" styleClass="btn btn-success"/>&nbsp;
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+
+                //metodo de busqueda, para mostrar un loading
+            function onEventFunction(data) {
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;
+
+                case "complete": // After the ajax response is arrived.
+                console.log("Ajax complete");
+                break;
+
+                case "success": // After update of HTML DOM based on ajax response..
+                swal.close();
+                break;
+    }
+}
+            //Evento para cuando se hace click en el boton de Editar
+            function onClickEdit(data){
+                var status = data.status; // Can be "begin", "complete" or "success".
+
+                switch (status) {
+                case "begin": // Before the ajax request is sent.
+                
+                swal({});                
+                swal.showLoading();   
+                
+                break;
+
+                case "success": // After update of HTML DOM based on ajax response..
+                swal.close();
+                //Levantar el modal                
+                $("#myModal").modal('show');
+                break;
+            }
+        }
+            $(document).ready(function(){
+               
+               $('#btnNuevoCd').on('click', function(e){
+                   
+                   //Limpiar todos los campos
+                   $('#frmModalEdit\\:nombre').val('');
+                   $('#frmModalEdit\\:id_item').val('');
+                   $('#frmModalEdit\\:capacidadCd').val('');
+                   $('#frmModalEdit\\:notaCd').val('');
+                   $('#frmModalEdit\\:descripcionCd').val('');
+                   $('#frmModalEdit\\:nombreCategoria').val('');
+                   $('#frmModalEdit\\:codigoCd').val(0);
+                   //Levantar el modal
+                   $("#myModal").modal('show');
+               });
+            });
+            </script>
+        </ui:define>
+    </ui:composition>   
+</html>

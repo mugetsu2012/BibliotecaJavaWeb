@@ -33,7 +33,7 @@ public class CatalogosService extends ServiceBase {
      */
     public long insertarCategoria(Categoria categoria){
         
-        String querySql ="INSERT INTO categoria(categoria, descripcion) values ('"+categoria.nombre+"','"+categoria.descripcion+"')";
+        String querySql ="INSERT INTO categoria(categoria, descripcion) values ('"+categoria.getNombre()+"','"+categoria.getDescripcion()+"')";
         long codigoCategoria = conexion.realizarInsert(querySql);
         return codigoCategoria;
     }
@@ -41,8 +41,8 @@ public class CatalogosService extends ServiceBase {
     public void editarCategoria(Categoria categoria){
         
         String querySql = "update categoria\n" +
-            "set categoria = '"+categoria.nombre+"', descripcion = '"+categoria.descripcion+"'\n" +
-            "where id_categoria = "+categoria.codigo+"";
+            "set categoria = '"+categoria.getNombre()+"', descripcion = '"+categoria.getDescripcion()+"'\n" +
+            "where id_categoria = "+categoria.getCodigo()+"";
         
         conexion.ejecutarQuery(querySql);
     }
@@ -89,7 +89,7 @@ public class CatalogosService extends ServiceBase {
         return estantes;
     }
     
-    public List<Categoria> getCategorias(){
+    public List<Categoria> getCategorias(String texto){
         List<Categoria> categorias = new ArrayList<Categoria>();
         
         String query = "select * from categoria";
@@ -98,13 +98,17 @@ public class CatalogosService extends ServiceBase {
         try{
             while(rs.next()){
                 Categoria categoria = new Categoria();
-                categoria.codigo = rs.getLong("id_categoria");
-                categoria.nombre = rs.getString("categoria");
-                categoria.descripcion = rs.getString("descripcion");
+                categoria.setCodigo(rs.getLong("id_categoria"));
+                categoria.setNombre(rs.getString("categoria"));
+                categoria.setDescripcion(rs.getString("descripcion"));
                 categorias.add(categoria);
             }
         } catch(SQLException e){
             System.out.println("Error: " + e.getMessage());
+        }
+        if(texto != null&& !texto.isEmpty()){
+            categorias = categorias.stream().filter(p -> p.nombre.toLowerCase().contains(texto.toLowerCase()))
+                    .collect(Collectors.toList());
         }
         
         return categorias;

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:composition template="/WEB-INF/facelets/templates/layout.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Parametros" />
+        </ui:define>
+        <ui:define name="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card ">
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">search</i>
+                                </div>
+                                <h4 class="card-title">Parametros</h4>
+                            </div>
+                            <h:form>
+                                <div class="card-body ">
+                              
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="moraPorDia" class="bmd-label-floating">Mora por dia</label>
+                                                <h:inputText id="moraPorDia" value="#{paramtrosBean.parametro.mora_por_dia}" styleClass="form-control">
+                                                    <f:passThroughAttribute name="type" value="number"/>
+                                                </h:inputText>                                        
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="diasPrestarProfesor" class="bmd-label-floating">Dias prestar profesor</label>
+                                                <h:inputText id="diasPrestarProfesor" value="#{paramtrosBean.parametro.dias_prestar_profesor}" styleClass="form-control">
+                                                    <f:passThroughAttribute name="type" value="number"/>
+                                                </h:inputText>                                        
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="diasPrestarAlumno" class="bmd-label-floating">Dias prestar alumno</label>
+                                                <h:inputText id="diasPrestarAlumno" value="#{paramtrosBean.parametro.dias_prestar_alumno}" styleClass="form-control">
+                                                    <f:passThroughAttribute name="type" value="number"/>
+                                                </h:inputText>                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="cantidadPrestarProfe" class="bmd-label-floating">Cantidad prestar profesor</label>
+                                                <h:inputText id="cantidadPrestarProfe" value="#{paramtrosBean.parametro.cantidad_prestar_profesor}" styleClass="form-control">
+                                                    <f:passThroughAttribute name="type" value="number"/>
+                                                </h:inputText>                                        
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="cantidadPrestarAlumno" class="bmd-label-floating">Cantidad prestar alumno</label>
+                                                <h:inputText id="cantidadPrestarAlumno" value="#{paramtrosBean.parametro.cantidad_prestar_alumno}" styleClass="form-control">
+                                                    <f:passThroughAttribute name="type" value="number"/>
+                                                </h:inputText>                                        
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    <h:inputHidden id="codigoParametros" value="#{paramtrosBean.parametro.id_parametros}"/>                     
+                            </div>
+                            <div class="card-footer ">                                
+
+                                <h:commandButton styleClass="btn btn-fill btn-rose" value="Guardar" id="btnBuscar"
+                                                 action="#{crudEstantesBean.buscarTexto(paramtrosBean.guardar())}">                                    
+                                </h:commandButton>
+                            </div>
+                            </h:form>
+                            
+                        </div>
+                    </div>
+                   
+                </div>
+                
+            </div>
+
+        </ui:define>     
+        <ui:define name="scripts">
+            <script>
+                
+              
+            $(document).ready(function(){
+               
+               
+            });
+            </script>
+        </ui:define>
+    </ui:composition>   
+    
+    
+</html>
+

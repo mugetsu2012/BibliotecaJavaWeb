@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-  xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
 
     <h:head>
         <meta charset="utf-8" />
@@ -35,10 +35,10 @@ and open the template in the editor.
                   Tip 2: you can also add an image using data-image tag
                 -->
                 <div class="logo">
-                    <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+                    <a href="./faces/misprestamos.xhtml" class="simple-text logo-mini">
                         BW
                     </a>
-                    <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+                    <a href="./faces/misprestamos.xhtml" class="simple-text logo-normal">
                         Biblioteca Web
                     </a>
                 </div>
@@ -50,32 +50,94 @@ and open the template in the editor.
                         <div class="user-info">
                             <a data-toggle="collapse" href="#collapseExample" class="username">
                                 <span>
-                                    Admin
-                                    
+                                    #{loginBean.usuarioActual}
+
                                 </span>
                             </a>                            
                         </div>
                     </div>
-                    <ul class="nav">                       
-                        <li class="nav-item active">
-                            <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
+                    <ul class="nav">
+                        <li class="nav-item" id="padreItemsPrestamos">
+                            <a class="nav-link" data-toggle="collapse" href="#itemsPrestamos">
+                                <i class="material-icons">account_box</i>
+                                <p> Prestamos
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="itemsPrestamos">
+                                <ul class="nav">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/prestamos.xhtml">
+                                                <span class="sidebar-mini"> P </span>
+                                                <span class="sidebar-normal"> Prestamos </span>
+                                            </a>
+                                        </li> 
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/devoluciones.xhtml">
+                                                <span class="sidebar-mini"> D </span>
+                                                <span class="sidebar-normal"> Devoluciones </span>
+                                            </a>
+                                        </li> 
+                                    </h:panelGroup> 
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="./faces/misprestamos.xhtml">
+                                            <span class="sidebar-mini"> MP </span>
+                                            <span class="sidebar-normal"> Mis prestamos </span>
+                                        </a>
+                                    </li> 
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item" id="padreCatalogosBar">
+                            <a class="nav-link" data-toggle="collapse" href="#catalogosBar">
                                 <i class="material-icons">apps</i>
                                 <p> Catalogos
                                     <b class="caret"></b>
                                 </p>
                             </a>
-                            <div class="collapse" id="componentsExamples">
+                            <div class="collapse" id="catalogosBar">
                                 <ul class="nav">
-                                    <li class="nav-item ">
-                                        <a class="nav-link" href="./faces/estantes.xhtml">
-                                            <span class="sidebar-mini"> E </span>
-                                            <span class="sidebar-normal"> Estantes </span>
-                                        </a>
-                                    </li>                                    
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/estantes.xhtml">
+                                                <span class="sidebar-mini"> E </span>
+                                                <span class="sidebar-normal"> Estantes </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/categorias.xhtml">
+                                                <span class="sidebar-mini"> C </span>
+                                                <span class="sidebar-normal"> Categorias </span>
+                                            </a>
+                                        </li> 
+                                    </h:panelGroup>
                                 </ul>
                             </div>
                         </li>                       
-                        <li class="nav-item">
+                        <li class="nav-item" id="padreReporteBar">
+                            <a class="nav-link" data-toggle="collapse" href="#reportesBar">
+                                <i class="material-icons">list</i>
+                                <p> Reportes
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="reportesBar">
+                                <ul class="nav">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/reporte.xhtml">
+                                                <span class="sidebar-mini"> MP </span>
+                                                <span class="sidebar-normal"> Más prestados </span>
+                                            </a>
+                                        </li>
+                                    </h:panelGroup>
+                                </ul>
+                            </div>
+                        </li>                       
+                        <li class="nav-item" id="padreItemsBar">
                             <a class="nav-link" data-toggle="collapse" href="#itemsBar">
                                 <i class="material-icons">book</i>
                                 <p> Items
@@ -94,8 +156,76 @@ and open the template in the editor.
                                             <span class="sidebar-normal"> Tesis </span>
                                         </a> 
                                     </li>
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/libros.xhtml">
+                                                <span class="sidebar-mini"> L </span>
+                                                <span class="sidebar-normal"> Libros </span>
+                                            </a>
+                                        </li> 
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="./faces/revistas.xhtml"  >
+                                                <span class="sidebar-mini">R</span>
+                                                <span class="sidebar-normal">Revistas</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="./faces/tesis.xhtml"  >
+                                                <span class="sidebar-mini">T</span>
+                                                <span class="sidebar-normal">Tesis</span>
+                                            </a>
+                                        </li>
+                                         <li class="nav-item">
+                                            <a class="nav-link" href="./faces/cd.xhtml"  >
+                                                <span class="sidebar-mini">CD</span>
+                                                <span class="sidebar-normal">Cds</span>
+                                            </a>
+                                        </li>
+                                    </h:panelGroup>
+
                                 </ul>
                                    
+                            </div>
+                        </li>
+                        <li class="nav-item" id="padreUsersBar">
+                            <a class="nav-link" data-toggle="collapse" href="#usersBar">
+                                <i class="material-icons">face</i>
+                                <p> Usuarios
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="usersBar">
+                                <ul class="nav">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/usuarios.xhtml">
+                                                <span class="sidebar-mini"> U </span>
+                                                <span class="sidebar-normal"> Usuarios </span>
+                                            </a>
+                                        </li> 
+                                    </h:panelGroup>
+
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item" id="padreConfigBar">
+                            <a class="nav-link" data-toggle="collapse" href="#configBar">
+                                <i class="material-icons">settings</i>
+                                <p> Configuracion
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="configBar">
+                                <ul class="nav">
+                                    <h:panelGroup rendered="#{loginBean.rolActual == 'Admin'}">
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="./faces/parametros.xhtml">
+                                                <span class="sidebar-mini"> PR </span>
+                                                <span class="sidebar-normal"> Parametros </span>
+                                            </a>
+                                        </li> 
+                                    </h:panelGroup>
+                                </ul>                                   
                             </div>
                         </li>
                     </ul>
@@ -112,7 +242,7 @@ and open the template in the editor.
                                     <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
                                 </button>
                             </div>
-                            <a class="navbar-brand" href="#pablo">Dashboard</a>
+                            <a class="navbar-brand" href="#"> <ui:insert name="title" /></a>
                         </div>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="sr-only">Toggle navigation</span>
@@ -120,39 +250,49 @@ and open the template in the editor.
                             <span class="navbar-toggler-icon icon-bar"></span>
                             <span class="navbar-toggler-icon icon-bar"></span>
                         </button>
-                        <div class="collapse navbar-collapse justify-content-end">
-                            
-                            <ul class="navbar-nav">                                
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#pablo" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">person</i>                                        
-                                        <p>
-                                            <span class="d-lg-none d-md-block">Cuenta
-                                                <b class="caret"></b>
-                                            </span>
+                        <h:panelGroup rendered="#{loginBean.estaLogueado}">
+                            <div class="collapse navbar-collapse justify-content-end">
 
-                                        </p>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="#pablo">Salir</a>                                        
-                                    </div>
-                                </li>                               
-                            </ul>
-                        </div>
+                                <ul class="navbar-nav">                                
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link" href="#pablo" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="material-icons">person</i>                                        
+                                            <p>
+                                                <span class="d-lg-none d-md-block">Cuenta
+                                                    <b class="caret"></b>
+                                                </span>
+
+                                            </p>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                            <h:form>
+                                                <h:commandLink styleClass="dropdown-item" value="Salir" action="#{loginBean.logOut()}">
+
+                                                </h:commandLink>
+                                            </h:form>
+
+                                        </div>
+
+
+                                    </li>                               
+                                </ul>
+                            </div>
+                        </h:panelGroup>
                     </div>
                 </nav>
                 <!-- End Navbar -->
                 <div class="content">
-                    
-                   <ui:insert name="content">
-				<span>Página en construcción</span>
-			</ui:insert>
+
+                    <ui:insert name="content">
+                        <span>Página en construcción</span>
+                    </ui:insert>
                 </div>
                 <footer class="footer ">
                     <div class="container">
-                        
+
                         <div class="copyright pull-right">
-                            
+
                             <script>
                                 document.write(new Date().getFullYear())
                             </script>, hecho con <i class="material-icons">favorite</i> por
@@ -165,7 +305,7 @@ and open the template in the editor.
     </body>
     <!--   Core JS Files   -->
     <script src="./assets/js/core/jquery.min.js"></script>
-    
+
     <script src="./assets/js/core/popper.min.js"></script>
     <script src="./assets/js/bootstrap-material-design.js"></script>
     <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
@@ -216,7 +356,36 @@ and open the template in the editor.
     <script src="./assets/js/plugins/fullcalendar.min.js"></script>
     <!-- demo init -->
     <script src="./assets/js/plugins/demo.js"></script>  
-    
+
+    <script>
+        $(document).ready(function(){      
+            
+            
+            if($("#catalogosBar &gt; ul").children().length &lt;= 0){
+                $("#padreCatalogosBar").remove();
+            }
+            
+            if($("#reportesBar &gt; ul").children().length &lt;= 0){
+                $("#padreReporteBar").remove();
+            }
+            
+            if($("#itemsBar &gt; ul").children().length &lt;= 0){
+                $("#padreItemsBar").remove();
+            }
+            
+            if($("#itemsPrestamos &gt; ul").children().length &lt;= 0){
+                $("#padreItemsPrestamos").remove();
+            }
+            
+            if($("#usersBar &gt; ul").children().length &lt;= 0){
+                $("#padreUsersBar").remove();
+            }
+            
+            if($("#configBar &gt; ul").children().length &lt;= 0){
+                $("#padreConfigBar").remove();
+            }                        
+        });
+    </script>
     <ui:insert name="scripts"></ui:insert>
 </html>
 
